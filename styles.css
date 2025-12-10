@@ -436,3 +436,69 @@ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
   color: #ffffff;
   margin-bottom: 40px;
 }
+/* ======================================
+   FORGOT PASSWORD 
+   (forgot-password.html)
+====================================== */
+.forgot-wrapper {
+padding: 193px 486px 194px 486px;
+min-height: 12vh;
+display: flex;
+justify-content: center;
+align-items: center;
+background-color: #450693;
+}
+
+.forgot-card {
+width: 468px;
+background-color: #8c00ff;
+border-radius: 25px;
+box-shadow: 0px 15px 15px rgba(0,0,0,0.25);
+padding: 60px 35px 50px;
+color: #fff;
+text-align: center;
+transition: box-shadow 0.2s ease;
+}
+
+/* Glow effect when you click/focus inside the form */
+.forgot-card:focus-within {
+box-shadow: 0 0 45px 18px rgba(255, 255, 255, 0.95);
+}
+
+.forgot-card h1 {
+font-family: 'Inter', sans-serif;
+font-weight: 700;
+font-size: 36px;
+line-height: 100%;
+color: #ffffff;
+
+margin-bottom: 40px;
+}
+
+.btn-forgot {
+width: 200px;
+border: none;
+height: 50px;
+border-radius: 999px;
+padding: 10px 18px;
+margin-top: 10px;
+font-size: 20px;
+font-weight: 600;
+color: #ffffff;
+cursor: pointer;
+background: linear-gradient(135deg, var(--accent-yellow), var(--accent-yellow-dark));
+box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.btn-forgot:hover {
+transform: translateY(-2px);
+box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
+filter: brightness(1.05);
+}
+
+.btn-forgot:active {
+transform: translateY(0);
+box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+}
+

@@ -20,7 +20,10 @@ body {
   margin: 0;
 }
 
-/* Navbar brand styling */
+/* --------------------------------------
+   NAVBAR (USED ON ALL AUTH PAGES)
+--------------------------------------- */
+
 .navbar-brand {
   background-color: #8C00FF;
   padding-left: 30px;
@@ -37,7 +40,10 @@ body {
   color: white;
 }
 
-/* Shared form styles */
+/* --------------------------------------
+   SHARED FORM STYLES (ALL AUTH PAGES)
+--------------------------------------- */
+
 .form-group {
   margin-bottom: 41px;
   text-align: center;
@@ -61,7 +67,9 @@ body {
   color: rgba(196, 196, 196, 1);
 }
 
-/* LOGIN PAGE SPECIFIC */
+/* ======================================
+   LOGIN PAGE (signin.html)
+====================================== */
 
 .login-wrapper {
   padding: 193px 486px 194px 486px;
@@ -154,7 +162,9 @@ body {
   text-decoration: underline;
 }
 
-/* SIGNUP PAGE SPECIFIC */
+/* ======================================
+   SIGNUP PAGE (signup.html)
+====================================== */
 
 .signup-wrapper {
   padding: 193px 486px 194px 486px;

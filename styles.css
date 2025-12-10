@@ -300,3 +300,129 @@ filter: brightness(1.05);
 transform: translateY(0);
 box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
 }
+
+/* ======================================
+   FORGOT PASSWORD – ENTER CODE PAGE
+   (forgot-enter-code.html)
+====================================== */
+
+.forgot-code-wrapper {
+  padding: 193px 486px 194px 486px;
+  min-height: 12vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.forgot-code-card {
+  width: 468px;
+  background-color: #8c00ff;
+  border-radius: 25px;
+  box-shadow: 0px 15px 15px rgba(0, 0, 0, 0.25);
+  padding: 60px 40px 50px;
+  color: #fff;
+  text-align: center;
+  transition: box-shadow 0.2s ease;
+}
+
+/* Glow when you click/focus inside the form (this is your “Clicked” state) */
+.forgot-code-card:focus-within {
+  box-shadow: 0 0 45px 18px rgba(255, 255, 255, 0.95);
+}
+
+.forgot-code-card h1 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 100%;
+  color: #ffffff;
+  margin-bottom: 30px;
+}
+
+/* smaller pill for the “Please write your email” text */
+.small-pill-input {
+  width: 260px;
+  height: 36px;
+  font-size: 14px;
+}
+
+/* the 6 white code dots */
+.code-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+  margin-bottom: 35px;
+}
+
+.code-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+}
+
+/* shared Confirm button for forgot-password flow */
+.btn-confirm {
+  width: 200px;
+  border: none;
+  height: 50px;
+  border-radius: 999px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--accent-yellow), var(--accent-yellow-dark));
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.btn-confirm:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
+  filter: brightness(1.05);
+}
+
+.btn-confirm:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+}
+
+/* ======================================
+   FORGOT PASSWORD – NEW PASSWORD PAGE
+   (forgot-new-password.html)
+====================================== */
+
+.forgot-new-wrapper {
+  padding: 193px 486px 194px 486px;
+  min-height: 12vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.forgot-new-card {
+  width: 468px;
+  background-color: #8c00ff;
+  border-radius: 25px;
+  padding: 60px 40px 50px;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0px 15px 15px rgba(0, 0, 0, 0.25);
+  transition: box-shadow 0.2s ease;
+}
+
+/* Glow when you click into either password field */
+.forgot-new-card:focus-within {
+  box-shadow: 0 0 45px 18px rgba(255, 255, 255, 0.95);
+}
+
+.forgot-new-card h1 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 100%;
+  color: #ffffff;
+  margin-bottom: 40px;
+}

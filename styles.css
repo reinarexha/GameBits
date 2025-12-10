@@ -239,3 +239,64 @@ body {
 .login-text a:hover {
   text-decoration: underline;
 }
+
+/* ======================================
+FORGOT PASSWORD RESULT PAGES
+(correct-code.html & incorrect-code.html)
+====================================== */
+
+.forgot-result-wrapper {
+padding: 193px 486px 194px 486px;
+min-height: 12vh;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.forgot-result-card {
+width: 468px;
+background-color: #8c00ff;
+border-radius: 25px;
+/* always glowing, like in the mockups */
+box-shadow: 0 0 45px 18px rgba(255, 255, 255, 0.95);
+padding: 80px 40px 70px;
+color: #fff;
+text-align: center;
+}
+
+.forgot-result-message {
+font-family: 'Inter', sans-serif;
+font-size: 18px;
+line-height: 1.4;
+margin-bottom: 40px;
+}
+
+/* Back to Log In button (yellow pill) */
+.btn-back-login {
+display: inline-block;
+
+text-decoration: none;
+text-align: center;
+width: 200px;
+border: none;
+height: 50px;
+line-height: 50px;
+border-radius: 999px;
+font-size: 18px;
+font-weight: 600;
+color: #ffffff;
+background: linear-gradient(135deg, var(--accent-yellow), var(--accent-yellow-dark));
+box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.btn-back-login:hover {
+transform: translateY(-2px);
+box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
+filter: brightness(1.05);
+}
+
+.btn-back-login:active {
+transform: translateY(0);
+box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+}

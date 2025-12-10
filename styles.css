@@ -1,6 +1,8 @@
 :root {
   --accent-yellow: rgba(255, 196, 0, 1);
   --accent-yellow-dark: #ff9f00;
+  --purple-bg: #450693;
+  --card-purple: #8c00ff;
 }
 
 * {
@@ -10,46 +12,246 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  background: #450693;
-  margin: 0;
+  background: #f3f4ff;
+  color: #111827;
 }
 
-/* --------------------------------------
-   NAVBAR (USED ON ALL AUTH PAGES)
---------------------------------------- */
+/* --------------------------
+   NAVBAR + BASIC LAYOUT
+--------------------------- */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+  z-index: 1000;
+}
+
+.bg-light {
+  background-color: #ffffff;
+}
+
+.fixed-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
 .navbar-brand {
-  background-color: #8C00FF;
-  padding-left: 30px;
-  padding-right: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 30px;
   border-radius: 30px;
-  color: white;
-  text-align: start;
+  background-color: var(--card-purple);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 20px;
+  text-decoration: none;
 }
 
 .navbar-brand:hover {
-  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
   background-color: #5e54e9;
-  border-color: #5e54e9;
-  color: white;
 }
 
-/* --------------------------------------
-   SHARED FORM STYLES (ALL AUTH PAGES)
---------------------------------------- */
+.fw-bold {
+  font-weight: 700;
+}
+
+.navbar-nav {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  list-style: none;
+}
+
+.nav-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4b5563;
+  text-decoration: none;
+  padding: 6px 8px;
+  border-radius: 999px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.nav-link:hover {
+  background: rgba(140, 0, 255, 0.06);
+  color: #111827;
+}
+
+.nav-link.active {
+  background: var(--card-purple);
+  color: #ffffff;
+}
+
+.navbar-toggler {
+  display: none; /* desktop only */
+}
+
+.d-flex {
+  display: flex;
+}
+
+.ms-2 {
+  margin-left: 0.5rem;
+}
+
+.ms-auto {
+  margin-left: auto;
+}
+
+.form-control {
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  padding: 8px 14px;
+  font-size: 14px;
+  outline: none;
+}
+
+.form-control::placeholder {
+  color: #9ca3af;
+}
+
+/* basic helpers used in about/home */
+.text-center { text-align: center; }
+.text-white { color: #ffffff; }
+.text-muted { color: #6b7280; }
+.text-warning { color: #facc15; }
+.lead { font-size: 1.1rem; }
+.mb-3 { margin-bottom: 1rem; }
+.mb-4 { margin-bottom: 1.5rem; }
+.mb-5 { margin-bottom: 2rem; }
+.mt-3 { margin-top: 1rem; }
+.py-5 { padding: 3rem 0; }
+
+/* grid / cards */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -12px;
+  margin-right: -12px;
+}
+
+.row.g-4 { row-gap: 1.5rem; column-gap: 1.5rem; }
+
+.col-md-4,
+.col-md-12 {
+  padding: 0 12px;
+}
+
+.col-md-4 {
+  flex: 0 0 33.3333%;
+  max-width: 33.3333%;
+}
+
+.col-md-12 {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  border: none;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 16px 20px;
+  font-weight: 600;
+  font-size: 16px;
+  background: rgba(140, 0, 255, 0.06);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.card-body {
+  padding: 16px 20px;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.h-100 { height: 100%; }
+
+.team-card { text-align: center; }
+.card-title { font-size: 16px; font-weight: 600; }
+.card-text { font-size: 13px; color: #6b7280; }
+
+.testimonial-card .card-body,
+.card-body.d-flex.align-items-center {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.rounded-circle { border-radius: 999px; }
+
+.blockquote-footer {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.rating { margin-top: 8px; font-size: 20px; }
+
+/* generic button used on about page */
+.btn {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary.btn-sm {
+  background: linear-gradient(135deg, var(--accent-yellow), var(--accent-yellow-dark));
+  color: #111827;
+}
+
+/* footer (home + about) */
+.footer {
+  margin-top: 48px;
+  padding: 24px 0;
+  font-size: 14px;
+  background: #020617;
+}
+
+/* --------------------------
+   SHARED FORM STYLES
+--------------------------- */
 
 .form-group {
-  margin-bottom: 41px;
+  margin-bottom: 24px;
   text-align: center;
 }
 
-.form-input {
+.form-input,
+.small-pill-input {
   width: 315px;
   height: 56px;
   border-radius: 25px;
@@ -59,55 +261,159 @@ body {
   font-size: 16px;
   color: #333;
   outline: none;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-  font-family: 'Inter', sans-serif;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  font-family: "Inter", sans-serif;
 }
 
-.form-input::placeholder {
-  color: rgba(196, 196, 196, 1);
+.form-input::placeholder,
+.small-pill-input::placeholder {
+  color: #c4c4c4;
 }
 
-/* ======================================
-   LOGIN PAGE (signin.html)
-====================================== */
+.small-pill-input {
+  width: 260px;
+  height: 36px;
+  font-size: 14px;
+}
 
-.login-wrapper {
-  padding: 193px 486px 194px 486px;
+/* --------------------------
+   BUTTONS (GRADIENT PILL)
+--------------------------- */
+
+.btn-login,
+.btn-signup,
+.btn-forgot,
+.btn-confirm,
+.btn-back-login,
+.btn-main,
+.btn-small {
+  display: inline-block;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--accent-yellow), var(--accent-yellow-dark));
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.btn-login,
+.btn-signup {
+  width: 315px;
+  height: 61px;
+  font-size: 25px;
+  margin-top: 40px;
+}
+
+.btn-forgot,
+.btn-confirm,
+.btn-back-login {
+  width: 200px;
+  height: 50px;
+  font-size: 18px;
+}
+
+.btn-back-login {
+  line-height: 50px;
+}
+
+.btn-main {
+  padding: 12px 24px;
+  font-size: 15px;
+  color: #111827;
+}
+
+.btn-small {
+  padding: 8px 18px;
+  font-size: 13px;
+  color: #111827;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.btn-login:hover,
+.btn-signup:hover,
+.btn-forgot:hover,
+.btn-confirm:hover,
+.btn-back-login:hover,
+.btn-main:hover,
+.btn-small:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
+  filter: brightness(1.05);
+}
+
+.btn-login:active,
+.btn-signup:active,
+.btn-forgot:active,
+.btn-confirm:active,
+.btn-back-login:active,
+.btn-main:active,
+.btn-small:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+}
+
+/* --------------------------
+   AUTH PAGE WRAPPERS
+--------------------------- */
+
+.login-wrapper,
+.signup-wrapper,
+.forgot-wrapper,
+.forgot-code-wrapper,
+.forgot-new-wrapper,
+.forgot-result-wrapper {
+  padding: 193px 486px 194px;
   min-height: 12vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: var(--purple-bg);
 }
 
-.login-card {
+/* all purple cards share most styles */
+.login-card,
+.signup-card,
+.forgot-card,
+.forgot-code-card,
+.forgot-new-card,
+.forgot-result-card {
   width: 468px;
-  height: 637px;
-  background-color: #8c00ff;
+  background-color: var(--card-purple);
   border-radius: 25px;
-  box-shadow: 0px 15px 15px rgba(0,0,0,0.25);
-  color: #fff;
-  text-align: center;
-}
-
-.login-card h1 {
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 50px;
-  line-height: 100%;
-  letter-spacing: 0;
   color: #ffffff;
   text-align: center;
-  margin-top: 85px;
-  margin-bottom: 76px;
+  box-shadow: 0 15px 15px rgba(0, 0, 0, 0.25);
+}
+
+/* Log in & Sign up */
+
+.login-card h1,
+.signup-card h1 {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 50px;
+  line-height: 1;
+  margin: 85px 0 76px;
+}
+
+.signup-card {
+  padding: 0 35px 40px;
+}
+
+.signup-card form,
+.login-card form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .forgot-password {
   margin-bottom: 20px;
   font-size: 15px;
-  font-family: 'Inter', sans-serif;
-  text-align: center;
+  font-family: "Inter", sans-serif;
   opacity: 0.85;
-  cursor: pointer;
 }
 
 .forgot-password a {
@@ -119,250 +425,63 @@ body {
   text-decoration: underline;
 }
 
-.btn-login {
-  width: 315px;
-  border: none;
-  height: 61px;
-  border-radius: 999px;
-  padding: 12px 18px;
-  margin-top: 40px;
-  font-size: 25px;
-  font-weight: 600;
-  color: #ffffff;
-  cursor: pointer;
-  background: linear-gradient(135deg, var(--accent-yellow), var(--accent-yellow-dark));
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-}
-
-.btn-login:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
-  filter: brightness(1.05);
-}
-
-.btn-login:active {
-  transform: translateY(0);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
-}
-
-.signup-text {
-  margin-top: 30px;
-  font-size: 0.8rem;
-  opacity: 0.9;
-}
-
-.signup-text a {
-  color: rgba(41, 233, 217, 1);
-  font-weight: 500;
-  text-decoration: none;
-}
-
-.signup-text a:hover {
-  text-decoration: underline;
-}
-
-/* ======================================
-   SIGNUP PAGE (signup.html)
-====================================== */
-
-.signup-wrapper {
-  padding: 193px 486px 194px 486px;
-  min-height: 12vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.signup-card {
-  width: 468px;
-  background-color: #8c00ff;
-  border-radius: 25px;
-  box-shadow: 0px 15px 15px rgba(0,0,0,0.25);
-  padding: 0px 35px 40px;
-  color: #fff;
-  line-height: 100%;
-  text-align: center;
-}
-
-.signup-card form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.signup-card h1 {
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 50px;
-  line-height: 100%;
-  letter-spacing: 0;
-  color: #ffffff;
-  margin: 0;
-  text-align: center;
-  margin-top: 85px;
-  margin-bottom: 76px;
-}
-
-.btn-signup {
-  width: 315px;
-  border: none;
-  height: 61px;
-  border-radius: 999px;
-  padding: 12px 18px;
-  margin-top: 40px;
-  font-size: 25px;
-  font-weight: 600;
-  color: #ffffff;
-  cursor: pointer;
-  background: linear-gradient(135deg, var(--accent-yellow), var(--accent-yellow-dark));
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-  margin-bottom: 0px;
-}
-
-.btn-signup:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
-  filter: brightness(1.05);
-}
-
-.btn-signup:active {
-  transform: translateY(0);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
-}
-
+.signup-text,
 .login-text {
   margin-top: 26px;
   font-size: 0.8rem;
   opacity: 0.9;
-  line-height: 1;
 }
 
+.signup-text a,
 .login-text a {
   color: rgba(41, 233, 217, 1);
   font-weight: 500;
   text-decoration: none;
 }
 
+.signup-text a:hover,
 .login-text a:hover {
   text-decoration: underline;
 }
 
-/* ======================================
-FORGOT PASSWORD RESULT PAGES
-(correct-code.html & incorrect-code.html)
-====================================== */
+/* Forgot password – email input */
 
-.forgot-result-wrapper {
-padding: 193px 486px 194px 486px;
-min-height: 12vh;
-display: flex;
-justify-content: center;
-align-items: center;
+.forgot-wrapper {
+  background-color: var(--purple-bg);
 }
 
-.forgot-result-card {
-width: 468px;
-background-color: #8c00ff;
-border-radius: 25px;
-/* always glowing, like in the mockups */
-box-shadow: 0 0 45px 18px rgba(255, 255, 255, 0.95);
-padding: 80px 40px 70px;
-color: #fff;
-text-align: center;
-}
-
-.forgot-result-message {
-font-family: 'Inter', sans-serif;
-font-size: 18px;
-line-height: 1.4;
-margin-bottom: 40px;
-}
-
-/* Back to Log In button (yellow pill) */
-.btn-back-login {
-display: inline-block;
-
-text-decoration: none;
-text-align: center;
-width: 200px;
-border: none;
-height: 50px;
-line-height: 50px;
-border-radius: 999px;
-font-size: 18px;
-font-weight: 600;
-color: #ffffff;
-background: linear-gradient(135deg, var(--accent-yellow), var(--accent-yellow-dark));
-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
-transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-}
-
-.btn-back-login:hover {
-transform: translateY(-2px);
-box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
-filter: brightness(1.05);
-}
-
-.btn-back-login:active {
-transform: translateY(0);
-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
-}
-
-/* ======================================
-   FORGOT PASSWORD – ENTER CODE PAGE
-   (forgot-enter-code.html)
-====================================== */
-
-.forgot-code-wrapper {
-  padding: 193px 486px 194px 486px;
-  min-height: 12vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.forgot-code-card {
-  width: 468px;
-  background-color: #8c00ff;
-  border-radius: 25px;
-  box-shadow: 0px 15px 15px rgba(0, 0, 0, 0.25);
-  padding: 60px 40px 50px;
-  color: #fff;
-  text-align: center;
+.forgot-card {
+  padding: 60px 35px 50px;
   transition: box-shadow 0.2s ease;
 }
 
-/* Glow when you click/focus inside the form (this is your “Clicked” state) */
-.forgot-code-card:focus-within {
+.forgot-card h1,
+.forgot-code-card h1,
+.forgot-new-card h1 {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1;
+  margin-bottom: 40px;
+}
+
+.forgot-card:focus-within,
+.forgot-code-card:focus-within,
+.forgot-new-card:focus-within {
   box-shadow: 0 0 45px 18px rgba(255, 255, 255, 0.95);
 }
 
-.forgot-code-card h1 {
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 36px;
-  line-height: 100%;
-  color: #ffffff;
-  margin-bottom: 30px;
+/* Forgot password – enter code */
+
+.forgot-code-card {
+  padding: 60px 40px 50px;
 }
 
-/* smaller pill for the “Please write your email” text */
-.small-pill-input {
-  width: 260px;
-  height: 36px;
-  font-size: 14px;
-}
-
-/* the 6 white code dots */
 .code-dots {
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-top: 18px;
-  margin-bottom: 35px;
+  margin: 18px 0 35px;
 }
 
 .code-dot {
@@ -373,132 +492,210 @@ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
 }
 
-/* shared Confirm button for forgot-password flow */
-.btn-confirm {
-  width: 200px;
-  border: none;
-  height: 50px;
-  border-radius: 999px;
-  font-size: 18px;
-  font-weight: 600;
-  color: #ffffff;
-  cursor: pointer;
-  background: linear-gradient(135deg, var(--accent-yellow), var(--accent-yellow-dark));
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-}
-
-.btn-confirm:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
-  filter: brightness(1.05);
-}
-
-.btn-confirm:active {
-  transform: translateY(0);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
-}
-
-/* ======================================
-   FORGOT PASSWORD – NEW PASSWORD PAGE
-   (forgot-new-password.html)
-====================================== */
-
-.forgot-new-wrapper {
-  padding: 193px 486px 194px 486px;
-  min-height: 12vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+/* Forgot password – new password */
 
 .forgot-new-card {
-  width: 468px;
-  background-color: #8c00ff;
-  border-radius: 25px;
   padding: 60px 40px 50px;
-  color: #fff;
-  text-align: center;
-  box-shadow: 0px 15px 15px rgba(0, 0, 0, 0.25);
-  transition: box-shadow 0.2s ease;
 }
 
-/* Glow when you click into either password field */
-.forgot-new-card:focus-within {
+/* Forgot result pages (correct/incorrect) */
+
+.forgot-result-card {
+  padding: 80px 40px 70px;
   box-shadow: 0 0 45px 18px rgba(255, 255, 255, 0.95);
 }
 
-.forgot-new-card h1 {
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 36px;
-  line-height: 100%;
-  color: #ffffff;
+.forgot-result-message {
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  line-height: 1.4;
   margin-bottom: 40px;
 }
-/* ======================================
-   FORGOT PASSWORD 
-   (forgot-password.html)
-====================================== */
-.forgot-wrapper {
-padding: 193px 486px 194px 486px;
-min-height: 12vh;
-display: flex;
-justify-content: center;
-align-items: center;
-background-color: #450693;
+
+/* --------------------------
+   HOME PAGE (home.html)
+--------------------------- */
+
+.hero {
+  padding-top: 120px;
+  padding-bottom: 80px;
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: center;
 }
 
-.forgot-card {
-width: 468px;
-background-color: #8c00ff;
-border-radius: 25px;
-box-shadow: 0px 15px 15px rgba(0,0,0,0.25);
-padding: 60px 35px 50px;
-color: #fff;
-text-align: center;
-transition: box-shadow 0.2s ease;
+.hero-title {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1.15;
+  color: #020617;
+  margin-bottom: 16px;
 }
 
-/* Glow effect when you click/focus inside the form */
-.forgot-card:focus-within {
-box-shadow: 0 0 45px 18px rgba(255, 255, 255, 0.95);
+.hero-sub {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #4b5563;
+  max-width: 640px;
+  margin: 0 auto;
 }
 
-.forgot-card h1 {
-font-family: 'Inter', sans-serif;
-font-weight: 700;
-font-size: 36px;
-line-height: 100%;
-color: #ffffff;
-
-margin-bottom: 40px;
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 32px;
 }
 
-.btn-forgot {
-width: 200px;
-border: none;
-height: 50px;
-border-radius: 999px;
-padding: 10px 18px;
-margin-top: 10px;
-font-size: 20px;
-font-weight: 600;
-color: #ffffff;
-cursor: pointer;
-background: linear-gradient(135deg, var(--accent-yellow), var(--accent-yellow-dark));
-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
-transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+.section-title {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  text-align: center;
+  color: #020617;
+  margin: 40px 0 16px;
 }
 
-.btn-forgot:hover {
-transform: translateY(-2px);
-box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
-filter: brightness(1.05);
+/* featured games */
+
+.games-grid,
+.why-grid,
+.testimonials-grid {
+  max-width: 960px;
+  margin: 0 auto 32px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
 }
 
-.btn-forgot:active {
-transform: translateY(0);
-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+.game-card,
+.why-card,
+.testimonial-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px 20px 20px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
 }
 
+.game-title {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #111827;
+}
+
+.game-desc {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 16px;
+}
+
+/* why section */
+
+.why-card {
+  text-align: left;
+}
+
+.why-icon {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.why-title {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 4px;
+  color: #111827;
+}
+
+.why-text {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* testimonials */
+
+.testimonial-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #8c00ff, #f97316);
+}
+
+.testimonial-text {
+  font-size: 14px;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.testimonial-meta {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* CTA banner */
+
+.cta-banner {
+  max-width: 960px;
+  margin: 16px auto 0;
+  padding: 24px 20px;
+  border-radius: 20px;
+  background: linear-gradient(
+    135deg,
+    rgba(140, 0, 255, 0.06),
+    rgba(234, 179, 8, 0.12)
+  );
+  text-align: center;
+}
+
+.cta-title {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  color: #020617;
+  margin-bottom: 8px;
+}
+
+.cta-text {
+  font-size: 14px;
+  color: #4b5563;
+  margin-bottom: 16px;
+}
+
+/* --------------------------
+   RESPONSIVE TWEAKS
+--------------------------- */
+
+@media (max-width: 900px) {
+  .games-grid,
+  .why-grid,
+  .testimonials-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .hero {
+    padding-top: 96px;
+    padding-bottom: 56px;
+  }
+
+  .hero-title {
+    font-size: 32px;
+  }
+
+  .games-grid,
+  .why-grid,
+  .testimonials-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+  }
+}

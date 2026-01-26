@@ -14,59 +14,54 @@
 </head>
 
 <body>
-  <!-- navbar -->
-  <nav class="navbar navbar-expand-lg bg-light fixed-top">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="index.html">Gamebits</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
+  <header>
+    <nav class="navbar">
+      <div class="nav-container">
+        <a class="nav-brand" href="index.html">Gamebits</a>
+        <ul class="nav-menu">
           <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="games.html">Mini-Games</a></li>
           <li class="nav-item"><a class="nav-link" href="leaderboard.html">Leaderboard</a></li>
           <li class="nav-item"><a class="nav-link" href="../aboutus.html">About</a></li>
           <li class="nav-item"><a class="nav-link active" href="login.html">Log In</a></li>
         </ul>
-        <form class="d-flex ms-2">
-          <input class="form-control" type="search" placeholder="Search games…" aria-label="Search">
+        <form class="nav-search">
+          <input type="search" placeholder="Search games…" aria-label="Search">
+        </form>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="login-wrapper">
+      <div class="login-card">
+        <h1>Log In</h1>
+
+        <form>
+          <div class="form-group">
+            <input type="email" class="form-input" placeholder="Email" required>
+          </div>
+
+          <div class="form-group">
+            <input type="password" class="form-input" placeholder="Password" required>
+          </div>
+
+          <div class="forgot-password">
+            <a href="forgot-password.html">Forgot Password?</a>
+          </div>
+
+          <button type="submit" class="btn-primary">
+            Log In
+          </button>
+
+          <p class="signup-text">
+            Don’t have an account?
+            <a href="signup.html">Sign Up</a>
+          </p>
         </form>
       </div>
     </div>
-  </nav>
-
-  <hr>
-
-  <div class="login-wrapper">
-    <div class="login-card">
-      <h1>Log In</h1>
-
-      <form>
-        <div class="form-group">
-          <input type="email" class="form-input" placeholder="Email" required>
-        </div>
-
-        <div class="form-group">
-          <input type="password" class="form-input" placeholder="Password" required>
-        </div>
-
-        <div class="forgot-password">
-          <a href="forgot-password.html">Forgot Password?</a>
-        </div>
-
-        <button type="submit" class="btn-login">
-          Log In
-        </button>
-
-        <p class="signup-text">
-          Don’t have an account?
-          <a href="signup.html">Sign Up</a>
-        </p>
-      </form>
-    </div>
-  </div>
+  </main>
 </body>
 
 </html>

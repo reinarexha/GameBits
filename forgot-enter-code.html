@@ -14,55 +14,50 @@
 </head>
 
 <body>
-  <!-- navbar (same pattern as other pages) -->
-  <nav class="navbar navbar-expand-lg bg-light fixed-top">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="index.html">Gamebits</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
+  <header>
+    <nav class="navbar">
+      <div class="nav-container">
+        <a class="nav-brand" href="index.html">Gamebits</a>
+        <ul class="nav-menu">
           <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="games.html">Mini-Games</a></li>
           <li class="nav-item"><a class="nav-link" href="leaderboard.html">Leaderboard</a></li>
-          <li class="nav-item"><a class="nav-link" href="./aboutus.html">About</a></li>
-          <li class="nav-item"><a class="nav-link" href="signin.html">Log In</a></li>
+          <li class="nav-item"><a class="nav-link" href="aboutus.html">About</a></li>
+          <li class="nav-item"><a class="nav-link active" href="signin.html">Sign In</a></li>
         </ul>
-        <form class="d-flex ms-2">
-          <input class="form-control" type="search" placeholder="Search games…" aria-label="Search">
+        <form class="nav-search">
+          <input type="search" placeholder="Search games…" aria-label="Search">
+        </form>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="forgot-code-wrapper">
+      <div class="forgot-code-card">
+        <h1>Forgot Password</h1>
+
+        <form>
+          <div class="form-group">
+            <input type="email" class="form-input small-pill-input" placeholder="Please write your email" required>
+          </div>
+
+          <div class="code-dots">
+            <span class="code-dot"></span>
+            <span class="code-dot"></span>
+            <span class="code-dot"></span>
+            <span class="code-dot"></span>
+            <span class="code-dot"></span>
+            <span class="code-dot"></span>
+          </div>
+
+          <button type="submit" class="btn-primary">
+            Confirm
+          </button>
         </form>
       </div>
     </div>
-  </nav>
-
-  <hr>
-
-  <div class="forgot-code-wrapper">
-    <div class="forgot-code-card">
-      <h1>Forgot Password</h1>
-
-      <form>
-        <div class="form-group">
-          <input type="email" class="form-input small-pill-input" placeholder="Please write your email" required>
-        </div>
-
-        <div class="code-dots">
-          <span class="code-dot"></span>
-          <span class="code-dot"></span>
-          <span class="code-dot"></span>
-          <span class="code-dot"></span>
-          <span class="code-dot"></span>
-          <span class="code-dot"></span>
-        </div>
-
-        <button type="submit" class="btn-confirm">
-          Confirm
-        </button>
-      </form>
-    </div>
-  </div>
+  </main>
 </body>
 
 </html>

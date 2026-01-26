@@ -9,124 +9,124 @@
 </head>
 
 <body>
-
-  <!-- navbar -->
-    <nav class="navbar navbar-expand-lg bg-light fixed-top">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="index.html">Gamebits</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
+  <header>
+    <nav class="navbar">
+      <div class="nav-container">
+        <a class="nav-brand" href="index.html">Gamebits</a>
+        <ul class="nav-menu">
           <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="games.html">Mini-Games</a></li>
           <li class="nav-item"><a class="nav-link" href="leaderboard.html">Leaderboard</a></li>
           <li class="nav-item"><a class="nav-link" href="./aboutus.html">About</a></li>
           <li class="nav-item"><a class="nav-link" href="signin.html">Log In</a></li>
         </ul>
-        <form class="d-flex ms-2">
-          <input class="form-control" type="search" placeholder="Search games…" aria-label="Search">
+        <form class="nav-search">
+          <input type="search" placeholder="Search games…" aria-label="Search">
         </form>
       </div>
-    </div>
-  </nav>
-  
-  <!-- hero -->
-  <section class="hero">
-    <h1 class="hero-title">Learn Leadership Through Play</h1>
-    <p class="hero-sub">
-      Gamebits offers quick, replayable mini-games designed to build real-life skills:
-      communication, decision-making, focus, delegation, and more.
-    </p>
+    </nav>
+  </header>
+  <main>
+    <!-- hero -->
+    <section class="hero">
+      <h1 class="hero-title">Learn Leadership Through Play</h1>
+      <p class="hero-sub">
+        Gamebits offers quick, replayable mini-games designed to build real-life skills:
+        communication, decision-making, focus, delegation, and more.
+      </p>
 
-    <div class="hero-buttons">
-      <a href="mini-games.html"><button class="btn-main">Play Mini-Games</button></a>
-      <a href="aboutus.html"><button class="btn-main">Learn More</button></a>
-    </div>
-  </section>
-
-  <!-- lojat -->
-  <h2 class="section-title">Featured Games</h2>
-  <section class="games-grid">
-    <div class="game-card">
-      <div class="game-title">Sudoku</div>
-      <div class="game-desc">Boost logic and focus with the classic number puzzle.</div>
-      <a href="/Sudoku/sudoku.html"><button class="btn-small">Play Now</button></a>
-    </div>
-
-    <div class="game-card">
-      <div class="game-title">Blackjack</div>
-      <div class="game-desc">Practice decision making and probability in this card classic.</div>
-      <a href="/blackjack/blackjack.html"><button class="btn-small">Play Now</button></a>
-    </div>
-
-    <div class="game-card">
-      <div class="game-title">Snake</div>
-      <div class="game-desc">Sharpen reaction time as you guide the growing snake.</div>
-      <a href="games/snake/index.html"><button class="btn-small">Play Now</button></a>
-    </div>
-  </section>
-
-
-  <h2 class="section-title">Why Gamebits Works</h2>
-  <section class="why-grid">
-    <div class="why-card">
-      <div class="why-icon">⚡️</div>
-      <div class="why-title">Fast & Replayable</div>
-      <p class="why-text">Each game takes 1–3 minutes, so you can practice anytime.</p>
-    </div>
-
-    <div class="why-card">
-      <div class="why-icon">🎳</div>
-      <div class="why-title">Skill-Focused</div>
-      <p class="why-text">Every game targets one leadership skill to help you improve.</p>
-    </div>
-
-    <div class="why-card">
-      <div class="why-icon">📈</div>
-      <div class="why-title">Learn by Doing</div>
-      <p class="why-text">Play, learn from mistakes, repeat, and level up your skills.</p>
-    </div>
-  </section>
-
-
-  <h2 class="section-title">What Players Say</h2>
-  <section class="testimonials-grid">
-    <div class="testimonial-card">
-      <div class="testimonial-avatar"></div>
-      <div>
-        <p class="testimonial-text">“Super practical! Helped me get better at delegating fast.”</p>
-        <p class="testimonial-meta">Ari — Team Lead</p>
+      <div class="hero-buttons">
+        <a href="mini-games.html"><button class="btn-primary">Play Mini-Games</button></a>
+        <a href="aboutus.html"><button class="btn-primary">Learn More</button></a>
       </div>
-    </div>
+    </section>
 
-    <div class="testimonial-card">
-      <div class="testimonial-avatar"></div>
-      <div>
-        <p class="testimonial-text">“We use it in workshops to teach focus. It works amazingly.”</p>
-        <p class="testimonial-meta">Mira — Scrum Master</p>
+    <!-- Featured Games -->
+    <section class="featured-games">
+      <h2 class="section-title">Featured Games</h2>
+      <div class="games-grid">
+        <div class="game-card">
+          <h3 class="game-title">Sudoku</h3>
+          <p class="game-desc">Boost logic and focus with the classic number puzzle.</p>
+          <a href="/Sudoku/sudoku.html"><button class="btn-primary">Play Now</button></a>
+        </div>
+
+        <div class="game-card">
+          <h3 class="game-title">Blackjack</h3>
+          <p class="game-desc">Practice decision making and probability in this card classic.</p>
+          <a href="/blackjack/blackjack.html"><button class="btn-primary">Play Now</button></a>
+        </div>
+
+        <div class="game-card">
+          <h3 class="game-title">Snake</h3>
+          <p class="game-desc">Sharpen reaction time as you guide the growing snake.</p>
+          <a href="games/snake/index.html"><button class="btn-primary">Play Now</button></a>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="testimonial-card">
-      <div class="testimonial-avatar"></div>
-      <div>
-        <p class="testimonial-text">“Made practicing communication skills so much easier.”</p>
-        <p class="testimonial-meta">Leo — People Manager</p>
+    <!-- Why Gamebits Works -->
+    <section class="why-section">
+      <h2 class="section-title">Why Gamebits Works</h2>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-icon">⚡️</div>
+          <h3 class="why-title">Fast & Replayable</h3>
+          <p class="why-text">Each game takes 1–3 minutes, so you can practice anytime.</p>
+        </div>
+
+        <div class="why-card">
+          <div class="why-icon">🎳</div>
+          <h3 class="why-title">Skill-Focused</h3>
+          <p class="why-text">Every game targets one leadership skill to help you improve.</p>
+        </div>
+
+        <div class="why-card">
+          <div class="why-icon">📈</div>
+          <h3 class="why-title">Learn by Doing</h3>
+          <p class="why-text">Play, learn from mistakes, repeat, and level up your skills.</p>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  
-  <section class="cta-banner">
-    <h2 class="cta-title">Ready to Start Playing?</h2>
-    <p class="cta-text">Choose a game and begin improving your skills today.</p>
-    <a href="mini-games.html"><button class="btn-main">Browse All Games</button></a>
-  </section>
+    <!-- Testimonials -->
+    <section class="testimonials">
+      <h2 class="section-title">What Players Say</h2>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-avatar"></div>
+          <div>
+            <p class="testimonial-text">“Super practical! Helped me get better at delegating fast.”</p>
+            <p class="testimonial-meta">Ari — Team Lead</p>
+          </div>
+        </div>
 
- 
+        <div class="testimonial-card">
+          <div class="testimonial-avatar"></div>
+          <div>
+            <p class="testimonial-text">“We use it in workshops to teach focus. It works amazingly.”</p>
+            <p class="testimonial-meta">Mira — Scrum Master</p>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-avatar"></div>
+          <div>
+            <p class="testimonial-text">“Made practicing communication skills so much easier.”</p>
+            <p class="testimonial-meta">Leo — People Manager</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-banner">
+      <h2 class="cta-title">Ready to Start Playing?</h2>
+      <p class="cta-text">Choose a game and begin improving your skills today.</p>
+      <a href="mini-games.html"><button class="btn-primary">Browse All Games</button></a>
+    </section>
+  </main>
+
   <footer class="footer">
     © 2024 Gamebits. Learn leadership by doing.
   </footer>

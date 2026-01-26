@@ -14,43 +14,37 @@
 </head>
 
 <body>
-    <!-- navbar -->
-    <nav class="navbar navbar-expand-lg bg-light fixed-top">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="index.html">Gamebits</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <a class="nav-brand" href="index.html">Gamebits</a>
+                <ul class="nav-menu">
                     <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="games.html">Mini-Games</a></li>
                     <li class="nav-item"><a class="nav-link" href="leaderboard.html">Leaderboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="./aboutus.html">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="signin.html">Log In</a></li>
+                    <li class="nav-item"><a class="nav-link" href="aboutus.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="signin.html">Sign In</a></li>
                 </ul>
-
-                <form class="d-flex ms-2">
-                    <input class="form-control" type="search" placeholder="Search games..." aria-label="Search">
+                <form class="nav-search">
+                    <input type="search" placeholder="Search games…" aria-label="Search">
                 </form>
             </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="forgot-result-wrapper">
+            <div class="forgot-result-card">
+                <p class="forgot-result-message">
+                    The code you entered was not correct, please try again
+                </p>
+
+                <a href="signin.html" class="btn-primary">
+                    Back to Log In
+                </a>
+            </div>
         </div>
-    </nav>
-
-    <hr>
-
-    <div class="forgot-result-wrapper">
-        <div class="forgot-result-card">
-            <p class="forgot-result-message">
-                The code you entered was not correct, please try again
-            </p>
-
-            <a href="signin.html" class="btn-back-login">
-                Back to Log In
-            </a>
-        </div>
-    </div>
+    </main>
 </body>
 
 </html>

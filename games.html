@@ -3,11 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Forgot Password - Gamebits</title>
-   <link rel="stylesheet" href="../styles.css">
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
+  <title>Mini-Games • Gamebits</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
@@ -16,10 +14,10 @@
         <a class="nav-brand" href="index.html">Gamebits</a>
         <ul class="nav-menu">
           <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="games.html">Mini-Games</a></li>
+          <li class="nav-item"><a class="nav-link active" href="games.html">Mini-Games</a></li>
           <li class="nav-item"><a class="nav-link" href="leaderboard.html">Leaderboard</a></li>
           <li class="nav-item"><a class="nav-link" href="aboutus.html">About</a></li>
-          <li class="nav-item"><a class="nav-link active" href="signin.html">Sign In</a></li>
+          <li class="nav-item"><a class="nav-link" href="signin.html">Log In</a></li>
         </ul>
         <form class="nav-search">
           <input type="search" placeholder="Search games…" aria-label="Search">
@@ -27,23 +25,20 @@
       </div>
     </nav>
   </header>
-
   <main>
-    <div class="forgot-wrapper">
-      <div class="forgot-card">
-        <h1>Forgot Password</h1>
-
-        <form>
-          <div class="form-group">
-            <input type="email" class="form-input" placeholder="Please write your email" required>
-          </div>
-
-          <button type="submit" class="btn-primary">
-            Send Code
-          </button>
-        </form>
+    <section class="hero">
+      <h1 class="hero-title">Mini-Games</h1>
+      <p class="hero-sub">
+        Browse our collection of leadership training mini-games.
+      </p>
+      <div class="hero-buttons">
+        <a href="home.html" class="btn-primary">Back to Home</a>
       </div>
-    </div>
+    </section>
   </main>
+  <footer class="footer">
+    <p>&copy; 2024 Gamebits. Learn leadership by doing.</p>
+  </footer>
 </body>
 </html>
+

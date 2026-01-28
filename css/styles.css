@@ -851,3 +851,116 @@ body {
   color: var(--text-muted);
   font-size: 0.9rem;
 }
+
+/* --------------------------
+   ADMIN HELPERS
+--------------------------- */
+
+.admin-wrap {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+}
+
+.admin-hero {
+  margin-top: 2rem;
+}
+
+.alert {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.alert-success { background: #10b981; }
+.alert-error { background: #ef4444; }
+
+.admin-search {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.admin-search-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.admin-search-btn {
+  padding: 0.75rem 1.25rem;
+}
+
+.admin-empty {
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 3rem;
+}
+
+.admin-games-grid {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.admin-game-card {
+  border: 1px solid var(--border-color);
+  padding: 1.5rem;
+}
+
+.admin-game-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.admin-game-desc {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.admin-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.admin-inline-form {
+  display: inline;
+}
+
+.btn-small {
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+}
+
+.btn-danger {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #dc2626;
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.45);
+}
+
+.admin-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.admin-page-info {
+  color: var(--text-secondary);
+  padding: 0.75rem 1rem;
+}

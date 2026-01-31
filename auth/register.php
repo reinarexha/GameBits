@@ -2,6 +2,7 @@
 
 
 require_once __DIR__ . '/../app/bootstrap.php';
+require_once __DIR__ . '/../app/core/Validator.php';
 
 $auth = new Auth();
 $auth->start();
@@ -16,14 +17,13 @@ $old = $_POST ?? [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $validator = new Validator();
-    $validator->validate($_POST, [
+    $errors = $validator->validate($_POST, [
         'username' => 'required|min_length:3',
         'email'    => 'required|email',
-        'password' => 'required|min_length:6',
+        'password' => 'required|min_length:8',
     ]);
-    $errors = $validator->errors();
 
-    if (!$validator->fails()) {
+    if (empty($errors)) {
         $username = trim((string) $_POST['username']);
         $email    = trim((string) $_POST['email']);
         $password = (string) $_POST['password'];
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="signup-wrapper">
             <div class="signup-card">
                 <h1>Register</h1>
-                <?php foreach ($errors as $msg): ?>
+                <?php foreach ($errors as $field => $msg): ?>
                     <p class="error"><?= htmlspecialchars($msg) ?></p>
                 <?php endforeach; ?>
                 <form method="post">

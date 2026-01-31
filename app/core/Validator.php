@@ -1,90 +1,82 @@
 <?php
 
-declare(strict_types=1);
-
 
 class Validator
 {
-    /** @var array<string, string> */
-    private array $errors = [];
-
     /**
-     * Validate data against rules.
-     * $rules format: [ 'field_name' => 'required|email|min_length:8' ]
+     * Validates data against the given rules.
      *
-     * @param array<string, mixed> $data
-     * @param array<string, string> $rules
-     * @return array<string, string> list of field => error message
+     * Rules format: each key is a field name, each value is a string of rules.
+     * Example: ['email' => 'required|email', 'password' => 'required|min_length:8']
+     *
+     * Supported rules:
+     * - required       : field must not be empty
+     * - email          : field must be a valid email address
+     * - min_length:N   : field must have at least N characters (e.g. min_length:8)
+     *
+     * @param array $data  The data to validate (e.g. $_POST)
+     * @param array $rules The rules for each field
+     * @return array Associative array of field name => error message. Empty if no errors.
      */
     public function validate(array $data, array $rules): array
     {
-        $this->errors = [];
+        $errors = [];
 
+        
         foreach ($rules as $field => $ruleString) {
-            $value = $data[$field] ?? '';
-            $value = is_string($value) ? trim($value) : $value;
+            
+            $value = isset($data[$field]) ? $data[$field] : '';
+           
+            if (is_string($value)) {
+                $value = trim($value);
+            }
 
-            foreach (explode('|', $ruleString) as $rule) {
+            
+            $ruleList = explode('|', $ruleString);
+
+            foreach ($ruleList as $rule) {
                 $rule = trim($rule);
                 if ($rule === '') {
                     continue;
                 }
 
+                
+                $param = null;
                 if (strpos($rule, ':') !== false) {
-                    [$ruleName, $param] = explode(':', $rule, 2);
-                    $param = trim($param);
-                } else {
-                    $ruleName = $rule;
-                    $param = null;
+                    $parts = explode(':', $rule, 2);
+                    $rule = trim($parts[0]);
+                    $param = isset($parts[1]) ? trim($parts[1]) : null;
                 }
 
-                if ($ruleName === 'required' && !$this->required($value)) {
-                    $this->errors[$field] = $this->errors[$field] ?? ucfirst($field) . ' is required.';
-                    break;
+                // --- required ---
+                if ($rule === 'required') {
+                    if ($value === null || $value === '') {
+                        $errors[$field] = ucfirst($field) . ' is required.';
+                        break; 
+                    }
                 }
-                if ($ruleName === 'email' && $value !== '' && !$this->email($value)) {
-                    $this->errors[$field] = $this->errors[$field] ?? 'Please enter a valid email.';
-                    break;
+
+                // --- email ---
+                if ($rule === 'email') {
+                    if ($value !== '' && filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
+                        $errors[$field] = 'Please enter a valid email.';
+                        break;
+                    }
                 }
-                if ($ruleName === 'min_length' && $param !== null && !$this->minLength($value, (int) $param)) {
-                    $this->errors[$field] = $this->errors[$field] ?? ucfirst($field) . ' must be at least ' . $param . ' characters.';
-                    break;
+
+                // --- min_length:N ---
+                if ($rule === 'min_length' && $param !== null) {
+                    $min = (int) $param;
+                    if ($value !== '' && $value !== null) {
+                        if (strlen((string) $value) < $min) {
+                            $errors[$field] = ucfirst($field) . ' must be at least ' . $min . ' characters.';
+                            break;
+                        }
+                    }
                 }
             }
         }
 
-        return $this->errors;
-    }
-
-    public function required(mixed $value): bool
-    {
-        if ($value === null || $value === '') {
-            return false;
-        }
-        return is_string($value) ? trim($value) !== '' : true;
-    }
-
-    public function email(string $value): bool
-    {
-        return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
-    }
-
-    public function minLength(mixed $value, int $min): bool
-    {
-        if ($value === null || $value === '') {
-            return true; // use required for empty
-        }
-        return strlen((string) $value) >= $min;
-    }
-
-    /** @return array<string, string> */
-    public function errors(): array
-    {
-        return $this->errors;
-    }
-
-    public function fails(): bool
-    {
-        return count($this->errors) > 0;
+        return $errors;
     }
 }

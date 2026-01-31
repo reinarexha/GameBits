@@ -2,6 +2,7 @@
 
 
 require_once __DIR__ . '/../app/bootstrap.php';
+require_once __DIR__ . '/../app/core/Validator.php';
 
 $auth = new Auth();
 $auth->start();
@@ -12,15 +13,18 @@ if ($auth->check()) {
     exit;
 }
 
-$error = '';
+$errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $login = trim((string) ($_POST['username'] ?? ''));
-    $password = (string) ($_POST['password'] ?? '');
+    $validator = new Validator();
+    $errors = $validator->validate($_POST, [
+        'username' => 'required',
+        'password' => 'required',
+    ]);
 
-    if ($login === '' || $password === '') {
-        $error = 'Please enter username and password.';
-    } else {
+    if (empty($errors)) {
+        $login = trim((string) $_POST['username']);
+        $password = (string) $_POST['password'];
         $db = new Database();
         $pdo = $db->getConnection();
 
@@ -43,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        $error = 'Invalid username or password.';
+        $errors['login'] = 'Invalid username or password.';
     }
 }
 
@@ -61,9 +65,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="login-wrapper">
             <div class="login-card">
                 <h1>Log In</h1>
-                <?php if ($error !== ''): ?>
-                    <p class="error"><?= htmlspecialchars($error) ?></p>
-                <?php endif; ?>
+                <?php foreach ($errors as $field => $msg): ?>
+                    <p class="error"><?= htmlspecialchars($msg) ?></p>
+                <?php endforeach; ?>
                 <form method="post">
                     <div class="form-group">
                         <input type="text" name="username" placeholder="Username or email" required

@@ -1,4 +1,8 @@
 <?php
+require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../config/Database.php';
+require_once __DIR__ . '/../app/models/SliderItem.php';
+
 session_start();
 
 if (!isset($_SESSION['admin'])) {
@@ -6,51 +10,124 @@ if (!isset($_SESSION['admin'])) {
   exit;
 }
 
-require_once __DIR__ . '/../includes/config.php';
-require_once __DIR__ . '/../config/Database.php';
-require_once __DIR__ . '/../app/models/SliderItem.php';
-
 $errors = [];
 $success = '';
 
+$storageDir  = __DIR__ . '/../storage';
+$storageFile = $storageDir . '/site_content.json';
+
+function readSiteContent(string $file): array {
+  if (!file_exists($file)) return [];
+  $raw = file_get_contents($file);
+  $data = json_decode($raw, true);
+  return is_array($data) ? $data : [];
+}
+
+function writeSiteContent(string $dir, string $file, array $data): bool {
+  if (!is_dir($dir)) {
+    @mkdir($dir, 0775, true);
+  }
+  $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+  return file_put_contents($file, $json, LOCK_EX) !== false;
+}
+
+if (empty($_SESSION['csrf_token'])) {
+  $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
+$siteContent = readSiteContent($storageFile);
+
+function old(string $key, $default = '') {
+  return $_POST[$key] ?? $default;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $postedToken = $_POST['csrf_token'] ?? '';
+  if (!hash_equals($_SESSION['csrf_token'], $postedToken)) {
+    $errors[] = 'Invalid form token. Please refresh the page and try again.';
+  } else {
 
-  // add slide
-  if (isset($_POST['add_slide'])) {
-    $title = trim($_POST['title'] ?? '');
-    $subtitle = trim($_POST['subtitle'] ?? '');
-    $imagePath = trim($_POST['image_path'] ?? '');
+    if (isset($_POST['save_home'])) {
+      $heroTitle = trim($_POST['hero_title'] ?? '');
+      $heroSubtitle = trim($_POST['hero_subtitle'] ?? '');
 
-    if ($title === '') {
-      $errors[] = 'Title is required.';
-    }
+      if ($heroTitle === '') {
+        $errors[] = 'Hero title is required.';
+      }
 
-    if ($imagePath === '') {
-      $errors[] = 'Image path is required.';
-    }
+      if (empty($errors)) {
+        $siteContent['hero_title'] = $heroTitle;
+        $siteContent['hero_subtitle'] = $heroSubtitle;
 
-    if (empty($errors)) {
-      $item = new SliderItem();
-      $item->title = $title;
-      $item->subtitle = $subtitle;
-      $item->image_path = $imagePath;
-
-      if ($item->save()) {
-        header('Location: ' . BASE_URL . '/admin/slider.php?success=Slide added');
-        exit;
-      } else {
-        $errors[] = 'Could not save slide. Try again.';
+        if (writeSiteContent($storageDir, $storageFile, $siteContent)) {
+          header('Location: ' . BASE_URL . '/admin/slider.php?success=Home content saved');
+          exit;
+        } else {
+          $errors[] = 'Could not save home content. Check folder permissions for /storage.';
+        }
       }
     }
-  }
 
-  // delete slide
-  if (isset($_POST['delete']) && isset($_POST['id'])) {
-    $id = (int)($_POST['id'] ?? 0);
-    if ($id > 0) {
-      SliderItem::delete($id);
-      header('Location: ' . BASE_URL . '/admin/slider.php?success=Slide deleted');
-      exit;
+    if (isset($_POST['save_about'])) {
+      $aboutText = trim($_POST['about_text'] ?? '');
+
+      if ($aboutText === '') {
+        $errors[] = 'About text is required.';
+      }
+
+      if (empty($errors)) {
+        $siteContent['about_text'] = $aboutText;
+
+        if (writeSiteContent($storageDir, $storageFile, $siteContent)) {
+          header('Location: ' . BASE_URL . '/admin/slider.php?success=About content saved');
+          exit;
+        } else {
+          $errors[] = 'Could not save about content. Check folder permissions for /storage.';
+        }
+      }
+    }
+
+    if (isset($_POST['add_slide'])) {
+      $title = trim($_POST['title'] ?? '');
+      $subtitle = trim($_POST['subtitle'] ?? '');
+      $imagePath = trim($_POST['image_path'] ?? '');
+
+      if ($title === '') {
+        $errors[] = 'Title is required.';
+      }
+
+      if ($imagePath === '') {
+        $errors[] = 'Image path is required.';
+      }
+
+      if ($imagePath !== '' && strpos($imagePath, '/uploads/slider/') !== 0) {
+        $errors[] = 'Image path must start with /uploads/slider/.';
+      }
+
+      if (empty($errors)) {
+        $item = new SliderItem();
+        $item->title = $title;
+        $item->subtitle = $subtitle;
+        $item->image_path = $imagePath;
+
+        if ($item->save()) {
+          header('Location: ' . BASE_URL . '/admin/slider.php?success=Slide added');
+          exit;
+        } else {
+          $errors[] = 'Could not save slide. Try again.';
+        }
+      }
+    }
+
+    if (isset($_POST['delete']) && isset($_POST['id'])) {
+      $id = (int)($_POST['id'] ?? 0);
+      if ($id > 0) {
+        SliderItem::delete($id);
+        header('Location: ' . BASE_URL . '/admin/slider.php?success=Slide deleted');
+        exit;
+      } else {
+        $errors[] = 'Invalid slide id.';
+      }
     }
   }
 }
@@ -62,8 +139,12 @@ if (isset($_GET['success'])) {
 $items = SliderItem::getAll();
 
 $pageTitle = 'Manage Slider';
-$currentPage = 'slider'; 
+$currentPage = 'slider';
 include __DIR__ . '/../includes/admin_header.php';
+
+$heroTitleVal = htmlspecialchars(old('hero_title', $siteContent['hero_title'] ?? ''), ENT_QUOTES, 'UTF-8');
+$heroSubtitleVal = htmlspecialchars(old('hero_subtitle', $siteContent['hero_subtitle'] ?? ''), ENT_QUOTES, 'UTF-8');
+$aboutTextVal = htmlspecialchars(old('about_text', $siteContent['about_text'] ?? ''), ENT_QUOTES, 'UTF-8');
 ?>
 
 <section class="hero admin-hero">
@@ -88,81 +169,45 @@ include __DIR__ . '/../includes/admin_header.php';
   <?php endif; ?>
 
   <div class="admin-card admin-form-card">
-    <h2 class="section-title" style="margin: 0 0 1rem;">Add new slide</h2>
-
+    <h2 class="section-title" style="margin: 0 0 1rem;">Home page content</h2>
     <form method="post">
-      <div class="admin-form-group">
-        <label class="admin-label">Title *</label>
-        <input class="admin-input" type="text" name="title" required value="<?= htmlspecialchars($_POST['title'] ?? '') ?>">
-      </div>
+      <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
 
       <div class="admin-form-group">
-        <label class="admin-label">Subtitle</label>
-        <input class="admin-input" type="text" name="subtitle" value="<?= htmlspecialchars($_POST['subtitle'] ?? '') ?>">
+        <label class="admin-label">Hero title</label>
+        <input class="admin-input" type="text" name="hero_title" value="<?= $heroTitleVal ?>">
       </div>
-
       <div class="admin-form-group">
-        <label class="admin-label">Image path *</label>
-        <input class="admin-input" type="text" name="image_path" placeholder="/uploads/slider/slide1.jpg" required value="<?= htmlspecialchars($_POST['image_path'] ?? '') ?>">
-        <small class="admin-help">Tip: use a path like <b>/uploads/slider/your-image.jpg</b></small>
+        <label class="admin-label">Hero subtitle</label>
+        <input class="admin-input" type="text" name="hero_subtitle" value="<?= $heroSubtitleVal ?>">
       </div>
-
       <div class="admin-form-actions">
-        <button class="btn-primary" type="submit" name="add_slide" value="1">Add slide</button>
+        <button class="btn-primary" type="submit" name="save_home" value="1">Save Home</button>
       </div>
     </form>
   </div>
 
-  <div class="admin-card">
-    <h2 class="section-title" style="margin: 0 0 1rem;">All slides</h2>
+  <div class="admin-card admin-form-card">
+    <h2 class="section-title" style="margin: 0 0 1rem;">About page content</h2>
+    <form method="post">
+      <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
 
-    <?php if (empty($items)): ?>
-      <p class="admin-empty">No slides yet. Add your first slide above.</p>
-    <?php else: ?>
-      <div class="admin-news-list">
-        <?php foreach ($items as $item): ?>
-          <div class="game-card admin-news-card">
-            <div class="admin-news-row">
-              <?php if (!empty($item->image_path)): ?>
-                <img
-                  src="<?= htmlspecialchars($item->image_path) ?>"
-                  alt="<?= htmlspecialchars($item->title ?? 'Slide image') ?>"
-                  class="admin-news-thumb"
-                  onerror="this.style.display='none';"
-                >
-              <?php endif; ?>
-
-              <div class="admin-news-content">
-                <h3 class="admin-news-title"><?= htmlspecialchars($item->title) ?></h3>
-
-                <?php if (!empty($item->subtitle)): ?>
-                  <p class="admin-news-excerpt"><?= htmlspecialchars($item->subtitle) ?></p>
-                <?php endif; ?>
-
-                <div class="admin-news-meta">
-                  <span class="admin-news-date">
-                    <?= !empty($item->created_at) ? date('M d, Y', strtotime($item->created_at)) : '' ?>
-                  </span>
-
-                  <?php if (!empty($item->image_path)): ?>
-                    <a class="admin-news-file" href="<?= htmlspecialchars($item->image_path) ?>" target="_blank">Open image</a>
-                  <?php endif; ?>
-                </div>
-
-                <div class="admin-card-actions" style="margin-top: 1rem;">
-                  <form method="post" class="admin-inline-form" onsubmit="return confirm('Delete this slide?');">
-                    <input type="hidden" name="id" value="<?= (int)$item->id ?>">
-                    <button type="submit" name="delete" value="1" class="btn-primary btn-small btn-danger">Delete</button>
-                  </form>
-                </div>
-
-              </div>
-            </div>
-          </div>
-        <?php endforeach; ?>
+      <div class="admin-form-group">
+        <label class="admin-label">About text</label>
+        <textarea class="admin-input" name="about_text" rows="5"><?= $aboutTextVal ?></textarea>
       </div>
-    <?php endif; ?>
+      <div class="admin-form-actions">
+        <button class="btn-primary" type="submit" name="save_about" value="1">Save About</button>
+      </div>
+    </form>
+  </div>
 
+  <div class="admin-card admin-form-card">
+    <h2 class="section-title" style="margin: 0 0 1rem;">Add new slide</h2>
+
+    <form method="post">
+      <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
+    </form>
   </div>
 
 </section>

@@ -16,11 +16,7 @@ class FileUploader {
         $this->uploadDir = $uploadDir;
     }
 
-    /**
-     * Validate and upload a file
-     * @param array 
-     * @return array|false
-     */
+ 
     public function upload(array $file) {
         $this->errors = [];
 
@@ -85,11 +81,7 @@ class FileUploader {
         ];
     }
 
-    /**
-     * Delete a file
-     * @param string 
-     * @return bool
-     */
+  
     public static function deleteFile(string $filePath): bool {
  
         if (strpos($filePath, '/') === 0) {
@@ -111,20 +103,11 @@ class FileUploader {
         return false;
     }
 
-    /**
-     * Get upload error messages
-     * @return array
-     */
+  
     public function getErrors(): array {
         return $this->errors;
     }
 
-    /**
-     * Generate a safe filename
-     * @param string 
-     * @param string 
-     * @return string
-     */
     private function generateSafeFilename(string $originalName, string $extension): string {
         $name = pathinfo($originalName, PATHINFO_FILENAME);
         $name = preg_replace('/[^a-zA-Z0-9_-]/', '_', $name);
@@ -134,11 +117,7 @@ class FileUploader {
         return $name . '_' . $timestamp . '_' . $random . '.' . $extension;
     }
 
-    /**
-     * Get human-readable upload error message
-     * @param int 
-     * @return string
-     */
+   
     private function getUploadErrorMessage(int $errorCode): string {
         switch ($errorCode) {
             case UPLOAD_ERR_INI_SIZE:

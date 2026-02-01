@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__ . '/../includes/config.php';
-require_once __DIR__ . '/../repositories/JsonNewsRepository.php';
+require_once __DIR__ . '/../repositories/DbNewsRepository.php';
 require_once __DIR__ . '/../utils/FileUploader.php';
 
-// $newsRepo = new JsonNewsRepository();
+$newsRepo = new DbNewsRepository();
 
 $id = (int)($_GET['id'] ?? 0);
 $news = $newsRepo->findById($id);

@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/../includes/config.php';
-require_once __DIR__ . '/../repositories/JsonNewsRepository.php';
+require_once __DIR__ . '/../repositories/DbNewsRepository.php';
 
-// $newsRepo = new JsonNewsRepository();
+$newsRepo = new DbNewsRepository();
 
 $searchQuery = $_GET['search'] ?? '';
 $page = (int)($_GET['page'] ?? 1);

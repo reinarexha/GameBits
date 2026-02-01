@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/../includes/config.php';
-require_once __DIR__ . '/../repositories/JsonGameRepository.php';
+require_once __DIR__ . '/../repositories/DbGameRepository.php';
 
-$gameRepo = new JsonGameRepository();
+$gameRepo = new DbGameRepository();
 
 $searchQuery = $_GET['search'] ?? '';
 $page = (int)($_GET['page'] ?? 1);

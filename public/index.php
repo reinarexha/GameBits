@@ -1,59 +1,71 @@
 <?php
 
-require_once __DIR__ . '/../app/bootstrap.php';
+require_once __DIR__ . '/../config/Database.php';
+require_once __DIR__ . '/../app/models/SliderItem.php';
 require_once __DIR__ . '/../app/models/PageContent.php';
 
 $auth = new Auth();
 $auth->start();
 
 $pageContent = new PageContent();
-$heroTitle = $pageContent->getText('home', 'hero_title', 'Welcome to Gamebits');
-$heroSubtitle = $pageContent->getText('home', 'hero_subtitle', 'Learn leadership through play. Quick, replayable mini-games designed to build real-life skills.');
-$aboutSnippet = $pageContent->getText('home', 'about_snippet', 'Play, reflect, improve, repeat.');
+$heroTitle = $pageContent->getText('home', 'hero_title', '');
+$heroSubtitle = $pageContent->getText('home', 'hero_subtitle', '');
 
+$slides = SliderItem::getAll();
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gamebits</title>
-  <link rel="stylesheet" href="../css/styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <title>Home</title>
 </head>
 <body>
-  <header>
-    <nav class="navbar">
-      <div class="nav-container">
-        <a class="nav-brand" href="index.php">Gamebits</a>
-        <ul class="nav-menu">
-          <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Mini-Games</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Leaderboard</a></li>
-          <li class="nav-item"><a class="nav-link" href="about.php">About</a></li>
-          <?php if ($auth->isAdmin()): ?><li class="nav-item"><a class="nav-link" href="/admin/">Admin Dashboard</a></li><?php endif; ?>
-          <li class="nav-item"><?php if (!$auth->check()): ?><a class="nav-link" href="/login.php">Log In</a><?php else: ?><a class="nav-link" href="/auth/logout.php">Logout</a><?php endif; ?></li>
-        </ul>
-        <form class="nav-search">
-          <input type="search" placeholder="Search games…" aria-label="Search">
-        </form>
-      </div>
-    </nav>
-  </header>
-  <main>
-    <section class="hero">
+
+<?php if ($heroTitle !== '' || $heroSubtitle !== ''): ?>
+  <section class="hero">
+    <?php if ($heroTitle !== ''): ?>
       <h1 class="hero-title"><?= htmlspecialchars($heroTitle) ?></h1>
-      <p class="hero-sub">
-        <?= htmlspecialchars($heroSubtitle) ?>
-      </p>
-      <p class="hero-sub"><?= htmlspecialchars($aboutSnippet) ?></p>
-      <div class="hero-buttons">
-        <a href="index.php" class="btn-primary">Get Started</a>
+    <?php endif; ?>
+
+    <?php if ($heroSubtitle !== ''): ?>
+      <p class="hero-subtitle"><?= htmlspecialchars($heroSubtitle) ?></p>
+    <?php endif; ?>
+  </section>
+<?php endif; ?>
+
+<?php if (!empty($slides)): ?>
+  <div class="slider" tabindex="0">
+    <button class="slider-btn prev" type="button" aria-label="Previous slide">‹</button>
+    <button class="slider-btn next" type="button" aria-label="Next slide">›</button>
+
+    <div class="slider-dots" aria-label="Slider dots"></div>
+
+    <?php foreach ($slides as $slide): ?>
+      <div class="slide">
+        <div class="slide-image">
+          <img
+            src="<?= htmlspecialchars($slide->image_path) ?>"
+            alt="<?= htmlspecialchars($slide->title ?: 'Slide image') ?>"
+          >
+        </div>
+
+        <div class="slide-content">
+          <?php if (!empty($slide->title)): ?>
+            <h2><?= htmlspecialchars($slide->title) ?></h2>
+          <?php endif; ?>
+
+          <?php if (!empty($slide->subtitle)): ?>
+            <p><?= htmlspecialchars($slide->subtitle) ?></p>
+          <?php endif; ?>
+        </div>
       </div>
-    </section>
-  </main>
-  <footer class="footer">
-    <p>&copy; 2024 Gamebits. Learn leadership by doing.</p>
-  </footer>
+    <?php endforeach; ?>
+  </div>
+<?php else: ?>
+  <p>No slides yet.</p>
+<?php endif; ?>
+
+<script src="/assets/js/slider.js"></script>
 </body>
 </html>

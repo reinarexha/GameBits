@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/config.php';
-require_once __DIR__ . '/../repositories/JsonGameRepository.php';
+require_once __DIR__ . '/../repositories/DbGameRepository.php';
 require_once __DIR__ . '/../utils/FileUploader.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -14,7 +14,7 @@ if ($id <= 0) {
     exit;
 }
 
-$gameRepo = new JsonGameRepository();
+$gameRepo = new DbGameRepository();
 $game = $gameRepo->findById($id);
 
 if (!$game) {

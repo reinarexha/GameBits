@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__ . '/../includes/config.php';
-require_once __DIR__ . '/../repositories/JsonGameRepository.php';
+require_once __DIR__ . '/../repositories/DbGameRepository.php';
 require_once __DIR__ . '/../utils/FileUploader.php';
 
-$gameRepo = new JsonGameRepository();
+$gameRepo = new DbGameRepository();
 $id = (int)($_GET['id'] ?? 0);
 $game = $gameRepo->findById($id);
 

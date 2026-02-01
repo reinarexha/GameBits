@@ -1,22 +1,22 @@
 <?php
 require_once __DIR__ . '/../includes/config.php';
-require_once __DIR__ . '/../repositories/JsonGameRepository.php';
-require_once __DIR__ . '/../repositories/JsonNewsRepository.php';
-require_once __DIR__ . '/../repositories/JsonScoreRepository.php';
+require_once __DIR__ . '/../repositories/DbGameRepository.php';
+require_once __DIR__ . '/../repositories/DbNewsRepository.php';
+require_once __DIR__ . '/../repositories/DbScoreRepository.php';
 
-$gameRepo = new JsonGameRepository();
-//$newsRepo = new JsonNewsRepository();
-//$scoreRepo = new JsonScoreRepository();
+$gameRepo = new DbGameRepository();
+$newsRepo = new DbNewsRepository();
+$scoreRepo = new DbScoreRepository();
 
 $games  = $gameRepo->findAll();
-//$news   = $newsRepo->findAll();
-//$scores = $scoreRepo->findAll();
+$news   = $newsRepo->findAll();
+$scores = $scoreRepo->findAll();
 
 $stats = [
   'total_games'  => count($games),
- // 'total_news'   => count($news),
-  //'total_scores' => count($scores),
-  //'total_users'  => count(array_unique(array_column($scores, 'user_id'))),
+  'total_news'   => count($news),
+  'total_scores' => count($scores),
+  'total_users'  => count(array_unique(array_column($scores, 'user_id'))),
 ];
 
 $pageTitle = 'Dashboard';

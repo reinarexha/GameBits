@@ -3,6 +3,9 @@
 require_once __DIR__ . '/../app/bootstrap.php';
 require_once __DIR__ . '/../app/models/PageContent.php';
 
+$auth = new Auth();
+$auth->start();
+
 $pageContent = new PageContent();
 $rows = $pageContent->getAllByPage('about');
 $sectionRows = array_filter($rows, fn($r) => strpos($r['section_key'] ?? '', 'section_') === 0);
@@ -28,7 +31,8 @@ $displayRows = !empty($sectionRows) ? $sectionRows : $rows;
                     <li class="nav-item"><a class="nav-link" href="#">Mini-Games</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Leaderboard</a></li>
                     <li class="nav-item"><a class="nav-link active" href="about.php">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/login.php">Log In</a></li>
+                    <?php if ($auth->isAdmin()): ?><li class="nav-item"><a class="nav-link" href="/admin/">Admin Dashboard</a></li><?php endif; ?>
+                    <li class="nav-item"><?php if (!$auth->check()): ?><a class="nav-link" href="/login.php">Log In</a><?php else: ?><a class="nav-link" href="/auth/logout.php">Logout</a><?php endif; ?></li>
                 </ul>
                 <form class="nav-search">
                     <input type="search" placeholder="Search games…" aria-label="Search">

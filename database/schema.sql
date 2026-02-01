@@ -9,7 +9,7 @@ CREATE TABLE users (
     updated_at DATETIME2 NOT NULL DEFAULT GETDATE(),  
     created_by INT NULL,                     
     updated_by INT NULL                      
-);
+);  
 GO
 
 ALTER TABLE users

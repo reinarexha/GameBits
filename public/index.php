@@ -3,6 +3,9 @@
 require_once __DIR__ . '/../app/bootstrap.php';
 require_once __DIR__ . '/../app/models/PageContent.php';
 
+$auth = new Auth();
+$auth->start();
+
 $pageContent = new PageContent();
 $heroTitle = $pageContent->getText('home', 'hero_title', 'Welcome to Gamebits');
 $heroSubtitle = $pageContent->getText('home', 'hero_subtitle', 'Learn leadership through play. Quick, replayable mini-games designed to build real-life skills.');
@@ -28,7 +31,8 @@ $aboutSnippet = $pageContent->getText('home', 'about_snippet', 'Play, reflect, i
           <li class="nav-item"><a class="nav-link" href="#">Mini-Games</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Leaderboard</a></li>
           <li class="nav-item"><a class="nav-link" href="about.php">About</a></li>
-          <li class="nav-item"><a class="nav-link" href="/login.php">Log In</a></li>
+          <?php if ($auth->isAdmin()): ?><li class="nav-item"><a class="nav-link" href="/admin/">Admin Dashboard</a></li><?php endif; ?>
+          <li class="nav-item"><?php if (!$auth->check()): ?><a class="nav-link" href="/login.php">Log In</a><?php else: ?><a class="nav-link" href="/auth/logout.php">Logout</a><?php endif; ?></li>
         </ul>
         <form class="nav-search">
           <input type="search" placeholder="Search games…" aria-label="Search">

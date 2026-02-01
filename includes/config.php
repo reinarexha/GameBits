@@ -2,7 +2,7 @@
 
 
 // base paths
-define('BASE_URL', '/GameBits-copy'); 
+define('BASE_URL', '/GameBits'); 
 define('BASE_PATH', dirname(__DIR__));
 define('STORAGE_PATH', BASE_PATH . '/storage');
 define('UPLOADS_PATH', BASE_PATH . '/uploads');

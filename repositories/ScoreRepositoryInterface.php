@@ -17,4 +17,6 @@ interface ScoreRepositoryInterface {
 
 
     public function findAllWithGames(): array;
+    public function update(int $id, array $data): bool;
+    public function delete(int $id): bool;
 }

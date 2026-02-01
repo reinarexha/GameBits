@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/config.php';
-require_once __DIR__ . '/../repositories/JsonNewsRepository.php';
+require_once __DIR__ . '/../repositories/DbNewsRepository.php';
 require_once __DIR__ . '/../utils/FileUploader.php';
 
 $errors = [];
@@ -41,14 +41,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   if (empty($errors)) {
-   // $newsRepo = new JsonNewsRepository();
+    $newsRepo = new DbNewsRepository();
     $newsRepo->create([
       'title' => $title,
       'body' => $body,
       'attachment_path' => $attachmentPath,
       'attachment_type' => $attachmentType,
-      // later for final:
-      // 'created_by' => $_SESSION['user']['id']
+      'created_by' => $_SESSION['user']['id']
     ]);
 
     header('Location: ' . BASE_URL . '/admin/news.php?success=' . urlencode('News item created successfully'));

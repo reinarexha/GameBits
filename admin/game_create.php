@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/config.php';
-require_once __DIR__ . '/../repositories/JsonGameRepository.php';
+require_once __DIR__ . '/../repositories/DbGameRepository.php';
 require_once __DIR__ . '/../utils/FileUploader.php';
 
 $errors = [];
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   if (empty($errors)) {
-    $gameRepo = new JsonGameRepository();
+    $gameRepo = new DbGameRepository();
     $gameRepo->create([
       'title' => $title,
       'description' => $description,

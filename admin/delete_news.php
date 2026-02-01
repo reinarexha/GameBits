@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/../includes/config.php';
-require_once __DIR__ . '/../repositories/JsonNewsRepository.php';
+require_once __DIR__ . '/../repositories/DbNewsRepository.php';
 require_once __DIR__ . '/../utils/FileUploader.php';
-// require_once __DIR__ . '/../includes/admin_guard.php'; // enable when you add login/roles
+//require_once __DIR__ . '/../includes/admin_guard.php'; 
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ' . BASE_URL . '/admin/news.php');
@@ -15,7 +15,7 @@ if ($id <= 0) {
     exit;
 }
 
-//$newsRepo = new JsonNewsRepository();
+$newsRepo = new DbNewsRepository();
 $news = $newsRepo->findById($id);
 
 if (!$news) {

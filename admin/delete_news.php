@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../includes/require_admin.php';
 require_once __DIR__ . '/../repositories/DbNewsRepository.php';
 require_once __DIR__ . '/../utils/FileUploader.php';
 //require_once __DIR__ . '/../includes/admin_guard.php'; 

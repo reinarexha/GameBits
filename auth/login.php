@@ -1,86 +1,109 @@
 <?php
+// auth/login.php
+session_start();
 
+require_once __DIR__ . "/../config/db.php"; // <-- change if your db connection file is elsewhere
 
-require_once __DIR__ . '/../app/bootstrap.php';
-require_once __DIR__ . '/../app/core/Validator.php';
-
-$auth = new Auth();
-$auth->start();
-
-
-if ($auth->check()) {
-    header('Location: /index.php');
+// If already logged in, redirect based on role
+if (isset($_SESSION['user_id'])) {
+  if (($_SESSION['role'] ?? '') === 'admin') {
+    header("Location: /admin/dashboard.php");
     exit;
+  }
+  header("Location: /games.php");
+  exit;
 }
 
-$errors = [];
+$error = "";
+$emailValue = "";
 
+// Handle login submit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $validator = new Validator();
-    $errors = $validator->validate($_POST, [
-        'username' => 'required',
-        'password' => 'required',
-    ]);
+  $email = trim($_POST['email'] ?? '');
+  $password = $_POST['password'] ?? '';
+  $emailValue = htmlspecialchars($email, ENT_QUOTES, 'UTF-8');
 
-    if (empty($errors)) {
-        $login = trim((string) $_POST['username']);
-        $password = (string) $_POST['password'];
-        $db = new Database();
-        $pdo = $db->getConnection();
+  if ($email === '' || $password === '') {
+    $error = "Please fill in both email and password.";
+  } else {
+    try {
+      // IMPORTANT: change column names if yours differ
+      $stmt = $pdo->prepare("SELECT id, email, password_hash, role FROM users WHERE email = ? LIMIT 1");
+      $stmt->execute([$email]);
+      $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        
-        $stmt = $pdo->prepare("SELECT id, username, email, password, role FROM users WHERE username = ? OR email = ?");
-        $stmt->execute([$login, $login]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+      // Generic error for both cases (prevents email enumeration)
+      if (!$user || !password_verify($password, $user['password_hash'])) {
+        $error = "Invalid email or password.";
+      } else {
+        // Successful login
+        session_regenerate_id(true);
 
-        if ($user && password_verify($password, $user['password'])) {
-            $auth->login([
-                'id'       => $user['id'],
-                'username' => $user['username'],
-                'role'     => $user['role'],
-            ]);
-            if ($auth->isAdmin()) {
-                header('Location: /admin/games/');
-            } else {
-                header('Location: /index.php');
-            }
-            exit;
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['email'] = $user['email'];
+        $_SESSION['role'] = $user['role']; // 'admin' or 'user'
+
+        // Redirect based on role
+        if ($user['role'] === 'admin') {
+          header("Location: /admin/dashboard.php");
+          exit;
         }
 
-        $errors['login'] = 'Invalid username or password.';
+        header("Location: /games.php");
+        exit;
+      }
+    } catch (Exception $e) {
+      // Don't expose raw DB errors in production
+      $error = "Something went wrong. Please try again.";
     }
+  }
 }
 
+// Optional: show messages passed via ?error=...
+if (isset($_GET['error'])) {
+  if ($_GET['error'] === 'unauthorized') $error = "You are not allowed to access that page.";
+  if ($_GET['error'] === 'login_required') $error = "Please log in to continue.";
+  if ($_GET['error'] === 'invalid') $error = "Invalid email or password.";
+  if ($_GET['error'] === 'empty') $error = "Please fill in both email and password.";
+}
 ?>
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log In – Gamebits</title>
-    <link rel="stylesheet" href="../css/styles.css">
+  <meta charset="utf-8">
+  <title>Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial, sans-serif; padding: 24px; }
+    .card { max-width: 420px; margin: 0 auto; border: 1px solid #ddd; border-radius: 10px; padding: 20px; }
+    label { display: block; margin-top: 12px; }
+    input { width: 100%; padding: 10px; margin-top: 6px; }
+    button { width: 100%; padding: 10px; margin-top: 16px; cursor: pointer; }
+    .error { background: #ffe5e5; border: 1px solid #ffb3b3; padding: 10px; border-radius: 8px; margin-bottom: 12px; }
+    .links { margin-top: 14px; text-align: center; }
+  </style>
 </head>
 <body>
-    <main>
-        <div class="login-wrapper">
-            <div class="login-card">
-                <h1>Log In</h1>
-                <?php foreach ($errors as $field => $msg): ?>
-                    <p class="error"><?= htmlspecialchars($msg) ?></p>
-                <?php endforeach; ?>
-                <form method="post">
-                    <div class="form-group">
-                        <input type="text" name="username" placeholder="Username or email" required
-                               value="<?= htmlspecialchars($_POST['username'] ?? '') ?>">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" name="password" placeholder="Password" required>
-                    </div>
-                    <button type="submit" class="btn-primary">Log In</button>
-                </form>
-                <p class="signup-text">Don’t have an account? <a href="/register.php">Register</a></p>
-            </div>
-        </div>
-    </main>
+  <div class="card">
+    <h2>Login</h2>
+
+    <?php if ($error !== ""): ?>
+      <div class="error"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></div>
+    <?php endif; ?>
+
+    <form method="POST" action="/auth/login.php">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" required value="<?php echo $emailValue; ?>">
+
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" required>
+
+      <button type="submit">Log in</button>
+    </form>
+
+    <div class="links">
+      <p>No account? <a href="/auth/register.php">Register</a></p>
+    </div>
+  </div>
 </body>
 </html>

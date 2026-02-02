@@ -44,10 +44,16 @@ date_default_timezone_set('Europe/Belgrade');
 /**
  * Database
  */
-define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
-define('DB_NAME', getenv('DB_NAME') ?: 'gamebits');
-define('DB_USER', getenv('DB_USER') ?: 'root');
-define('DB_PASS', getenv('DB_PASS') ?: '');
-define('DB_DRIVER', getenv('DB_DRIVER') ?: 'mysql');
+// define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+// define('DB_NAME', getenv('DB_NAME') ?: 'gamebits');
+// define('DB_USER', getenv('DB_USER') ?: 'root');
+// define('DB_PASS', getenv('DB_PASS') ?: '');
+// define('DB_DRIVER', getenv('DB_DRIVER') ?: 'mysql');
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'gamebits');
+define('DB_USER', 'gamebits_user');
+define('DB_PASS', 'gamebits_pass');
+define('DB_DRIVER', 'mysql');
+
 
 

@@ -85,6 +85,26 @@ CREATE TABLE IF NOT EXISTS contact_messages (
     updated_by INT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE IF NOT EXISTS news (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    body TEXT NOT NULL,
+    attachment_path VARCHAR(255) NULL,
+    attachment_type ENUM('image','pdf') NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by INT NULL,
+    updated_by INT NULL,
+
+    INDEX idx_news_created_at (created_at),
+
+    CONSTRAINT fk_news_created_by FOREIGN KEY (created_by) REFERENCES users(id)
+      ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT fk_news_updated_by FOREIGN KEY (updated_by) REFERENCES users(id)
+      ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
 
 INSERT INTO users (username, email, password, role, created_by, updated_by)
 VALUES ('admin', 'admin@example.com', 'PLACEHOLDER_HASH_FOR_admin123', 'admin', NULL, NULL)

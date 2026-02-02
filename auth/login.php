@@ -1,17 +1,18 @@
 <?php
 // auth/login.php
-session_start();
+require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../app/core/Database.php';
 
-require_once __DIR__ . "/../config/db.php"; // <-- change if your db connection file is elsewhere
+$pdo = Database::getConnection();
 
 // If already logged in, redirect based on role
 if (isset($_SESSION['user_id'])) {
-  if (($_SESSION['role'] ?? '') === 'admin') {
-    header("Location: /admin/dashboard.php");
+    if (($_SESSION['role'] ?? '') === 'admin') {
+        header('Location: ' . rtrim(BASE_URL, '/') . '/admin/dashboard.php');
+        exit;
+    }
+    header('Location: ' . rtrim(BASE_URL, '/') . '/games.php');
     exit;
-  }
-  header("Location: /games.php");
-  exit;
 }
 
 $error = "";
@@ -19,52 +20,52 @@ $emailValue = "";
 
 // Handle login submit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $email = trim($_POST['email'] ?? '');
-  $password = $_POST['password'] ?? '';
-  $emailValue = htmlspecialchars($email, ENT_QUOTES, 'UTF-8');
+    $email = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
+    $emailValue = htmlspecialchars($email, ENT_QUOTES, 'UTF-8');
 
-  if ($email === '' || $password === '') {
-    $error = "Please fill in both email and password.";
-  } else {
-    try {
-      // IMPORTANT: change column names if yours differ
-      $stmt = $pdo->prepare("SELECT id, email, password_hash, role FROM users WHERE email = ? LIMIT 1");
-      $stmt->execute([$email]);
-      $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($email === '' || $password === '') {
+        $error = "Please fill in both email and password.";
+    } else {
+        try {
+            // IMPORTANT: change column names if yours differ
+            $stmt = $pdo->prepare("SELECT id, email, password_hash, role FROM users WHERE email = ? LIMIT 1");
+            $stmt->execute([$email]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-      // Generic error for both cases (prevents email enumeration)
-      if (!$user || !password_verify($password, $user['password_hash'])) {
-        $error = "Invalid email or password.";
-      } else {
-        // Successful login
-        session_regenerate_id(true);
+            // Generic error for both cases (prevents email enumeration)
+            if (!$user || !password_verify($password, $user['password_hash'])) {
+                $error = "Invalid email or password.";
+            } else {
+                // Successful login
+                session_regenerate_id(true);
 
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['email'] = $user['email'];
-        $_SESSION['role'] = $user['role']; // 'admin' or 'user'
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['email'] = $user['email'];
+                $_SESSION['role'] = $user['role']; // 'admin' or 'user'
 
-        // Redirect based on role
-        if ($user['role'] === 'admin') {
-          header("Location: /admin/dashboard.php");
-          exit;
+                // Redirect based on role using BASE_URL
+                if ($user['role'] === 'admin') {
+                    header('Location: ' . rtrim(BASE_URL, '/') . '/admin/dashboard.php');
+                    exit;
+                }
+
+                header('Location: ' . rtrim(BASE_URL, '/') . '/games.php');
+                exit;
+            }
+        } catch (Exception $e) {
+            // Don't expose raw DB errors in production
+            $error = "Something went wrong. Please try again.";
         }
-
-        header("Location: /games.php");
-        exit;
-      }
-    } catch (Exception $e) {
-      // Don't expose raw DB errors in production
-      $error = "Something went wrong. Please try again.";
     }
-  }
 }
 
 // Optional: show messages passed via ?error=...
 if (isset($_GET['error'])) {
-  if ($_GET['error'] === 'unauthorized') $error = "You are not allowed to access that page.";
-  if ($_GET['error'] === 'login_required') $error = "Please log in to continue.";
-  if ($_GET['error'] === 'invalid') $error = "Invalid email or password.";
-  if ($_GET['error'] === 'empty') $error = "Please fill in both email and password.";
+    if ($_GET['error'] === 'unauthorized') $error = "You are not allowed to access that page.";
+    if ($_GET['error'] === 'login_required') $error = "Please log in to continue.";
+    if ($_GET['error'] === 'invalid') $error = "Invalid email or password.";
+    if ($_GET['error'] === 'empty') $error = "Please fill in both email and password.";
 }
 ?>
 <!doctype html>

@@ -105,6 +105,13 @@ CREATE TABLE IF NOT EXISTS news (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
+CREATE TABLE IF NOT EXISTS slider_items (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  subtitle VARCHAR(255) NULL,
+  image_path VARCHAR(255) NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO users (username, email, password, role, created_by, updated_by)
 VALUES ('admin', 'admin@example.com', 'PLACEHOLDER_HASH_FOR_admin123', 'admin', NULL, NULL)

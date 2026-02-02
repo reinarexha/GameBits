@@ -1,9 +1,8 @@
 <?php
 require_once __DIR__ . '/../includes/config.php';
-require_once __DIR__ . '/../config/Database.php';
+require_once __DIR__ . '/../app/core/Database.php';
 require_once __DIR__ . '/../app/models/SliderItem.php';
 
-session_start();
 
 if (!isset($_SESSION['admin'])) {
   header('Location: ' . BASE_URL . '/admin/login.php');

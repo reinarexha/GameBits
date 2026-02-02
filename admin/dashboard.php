@@ -4,6 +4,7 @@ require_once __DIR__ . '/../repositories/DbGameRepository.php';
 require_once __DIR__ . '/../repositories/DbNewsRepository.php';
 require_once __DIR__ . '/../repositories/DbScoreRepository.php';
 
+
 $gameRepo = new DbGameRepository();
 $newsRepo = new DbNewsRepository();
 $scoreRepo = new DbScoreRepository();

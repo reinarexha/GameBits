@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../includes/Database.php';
+require_once __DIR__ . '/../app/core/Database.php';
 require_once __DIR__ . '/ScoreRepositoryInterface.php';
 
 class DbScoreRepository implements ScoreRepositoryInterface {

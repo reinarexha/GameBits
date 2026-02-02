@@ -3,15 +3,21 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// base paths
-define('BASE_URL', '/GameBits'); 
-define('BASE_PATH', dirname(__DIR__));
+/**
+ * Paths
+ * BASE_PATH should point to the project root (GameBits/)
+ */
+define('BASE_PATH', dirname(__DIR__));           // GameBits/
+define('APP_PATH', BASE_PATH . '/app');
+
+define('BASE_URL', '/GameBits');
+
 define('STORAGE_PATH', BASE_PATH . '/storage');
 define('UPLOADS_PATH', BASE_PATH . '/uploads');
 define('UPLOADS_GAMES_PATH', UPLOADS_PATH . '/games');
 define('UPLOADS_NEWS_PATH', UPLOADS_PATH . '/news');
 
-// web-accessible paths 
+// web-accessible paths
 define('UPLOADS_WEB', '/uploads');
 define('UPLOADS_GAMES_WEB', UPLOADS_WEB . '/games');
 define('UPLOADS_NEWS_WEB', UPLOADS_WEB . '/news');
@@ -32,5 +38,16 @@ define('ALLOWED_NEWS_EXTENSIONS', ['jpg', 'jpeg', 'png', 'webp', 'pdf']);
 // pagination
 define('ITEMS_PER_PAGE', 12);
 
-// timezone
-date_default_timezone_set('UTC');
+// timezone (use Belgrade if that’s your app audience)
+date_default_timezone_set('Europe/Belgrade');
+
+/**
+ * Database
+ */
+define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+define('DB_NAME', getenv('DB_NAME') ?: 'gamebits');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASS') ?: '');
+define('DB_DRIVER', getenv('DB_DRIVER') ?: 'mysql');
+
+

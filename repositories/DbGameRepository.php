@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../includes/Database.php';
+require_once __DIR__ . '/../app/core/Database.php';
 require_once __DIR__ . '/GameRepositoryInterface.php';
 
 class DbGameRepository implements GameRepositoryInterface
@@ -58,7 +58,7 @@ class DbGameRepository implements GameRepositoryInterface
     {
         $userId = $_SESSION['user']['id'] ?? null;
 /**changed */
-        $stmt = $this->pdo->prepare("
+      $stmt = $this->pdo->prepare("
     UPDATE games
     SET title = :title,
         description = :description,
@@ -68,9 +68,10 @@ class DbGameRepository implements GameRepositoryInterface
         is_coming_soon = :is_coming_soon,
         sort_order = :sort_order,
         updated_by = :updated_by,
-        updated_at = GETDATE()
-    WHERE id = :id
+        updated_at = NOW()
+        WHERE id = :id
 ");
+
 
 /**changed */
         return $stmt->execute([

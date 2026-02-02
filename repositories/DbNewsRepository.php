@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../includes/Database.php';
+require_once __DIR__ . '/../app/core/Database.php';
 require_once __DIR__ . '/NewsRepositoryInterface.php';
 
 class DbNewsRepository implements NewsRepositoryInterface

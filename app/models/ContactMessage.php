@@ -4,41 +4,65 @@ require_once __DIR__ . '/../core/Database.php';
 
 class ContactMessage
 {
-    private Database $db;
-
-    public function __construct()
+    private static function pdo(): PDO
     {
-        $this->db = new Database();
+        $db = new Database();
+        return $db->getConnection();
     }
 
-    public function create(array $data, ?int $userId): bool
+    // Used by your contact form when creating a message
+    public static function create(array $data, ?int $userId = null): bool
     {
-        $pdo = $this->db->getConnection();
-        $stmt = $pdo->prepare("INSERT INTO contact_messages (name, email, subject, message, created_by, updated_by) VALUES (?, ?, ?, ?, ?, ?)");
+        $pdo = self::pdo();
+
+        $stmt = $pdo->prepare("
+            INSERT INTO contact_messages (name, email, subject, message, created_by, updated_by)
+            VALUES (:name, :email, :subject, :message, :created_by, :updated_by)
+        ");
+
         return $stmt->execute([
-            $data['name'] ?? '',
-            $data['email'] ?? '',
-            $data['subject'] ?? null,
-            $data['message'] ?? '',
-            $userId,
-            $userId
+            ':name'       => trim($data['name'] ?? ''),
+            ':email'      => trim($data['email'] ?? ''),
+            ':subject'    => ($data['subject'] ?? null) !== '' ? trim($data['subject']) : null,
+            ':message'    => trim($data['message'] ?? ''),
+            ':created_by' => $userId,
+            ':updated_by' => $userId,
         ]);
     }
 
-    public function all(): array
+    // Admin list
+    public static function getAll(): array
     {
-        $pdo = $this->db->getConnection();
+        $pdo = self::pdo();
         $stmt = $pdo->query("SELECT * FROM contact_messages ORDER BY created_at DESC");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $rows ?: [];
     }
 
-    public function find(int $id): ?array
+    // Admin view
+    public static function findById(int $id): ?array
     {
-        $pdo = $this->db->getConnection();
+        $pdo = self::pdo();
         $stmt = $pdo->prepare("SELECT * FROM contact_messages WHERE id = ?");
         $stmt->execute([$id]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row ?: null;
     }
+
+    // Admin action: mark read
+    public static function markAsRead(int $id): bool
+    {
+        $pdo = self::pdo();
+        $stmt = $pdo->prepare("UPDATE contact_messages SET is_read = 1 WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
+
+    // Admin action: delete
+    public static function delete(int $id): bool
+    {
+        $pdo = self::pdo();
+        $stmt = $pdo->prepare("DELETE FROM contact_messages WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
 }
+

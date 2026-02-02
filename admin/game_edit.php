@@ -17,6 +17,14 @@ $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $title = trim($_POST['title'] ?? '');
   $description = trim($_POST['description'] ?? '');
+
+ 
+  $playUrl = trim($_POST['play_url'] ?? '');
+  $difficulty = trim($_POST['difficulty'] ?? ''); 
+  $isComingSoon = isset($_POST['is_coming_soon']) ? 1 : 0;
+  $sortOrder = (int)($_POST['sort_order'] ?? 0);
+
+
   $imagePath = $game['image_path'] ?? '';
 
   if ($title === '') {
@@ -24,7 +32,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
  
+  if ($difficulty !== '' && !in_array($difficulty, ['easy', 'medium', 'hard'], true)) {
+    $errors[] = 'Difficulty must be Easy, Medium, or Hard';
+  }
+
+ 
+  if (!$isComingSoon && $playUrl === '') {
+    $errors[] = 'Play URL is required unless the game is marked Coming Soon';
+  }
+
+
   if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
+  
     if (!empty($game['image_path'])) {
       FileUploader::deleteFile($game['image_path']);
     }
@@ -46,8 +65,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (empty($errors)) {
     $gameRepo->update($id, [
       'title' => $title,
-      'description' => $description,
-      'image_path' => $imagePath,
+      'description' => $description !== '' ? $description : null,
+      'image_path' => $imagePath !== '' ? $imagePath : null,
+
+      'play_url' => $playUrl !== '' ? $playUrl : null,
+      'difficulty' => $difficulty !== '' ? $difficulty : null,
+      'is_coming_soon' => $isComingSoon,
+      'sort_order' => $sortOrder,
     ]);
 
     header('Location: ' . BASE_URL . '/admin/games.php?success=' . urlencode('Game updated successfully'));
@@ -77,6 +101,7 @@ include __DIR__ . '/../includes/admin_header.php';
   <?php endif; ?>
 
   <form method="POST" enctype="multipart/form-data" class="admin-form-card">
+
     <div class="admin-form-group">
       <label class="admin-label">Title *</label>
       <input
@@ -96,6 +121,60 @@ include __DIR__ . '/../includes/admin_header.php';
         class="admin-textarea"
       ><?= htmlspecialchars($_POST['description'] ?? ($game['description'] ?? '')) ?></textarea>
     </div>
+
+  
+    <div class="admin-form-group">
+      <label class="admin-label">Play URL</label>
+      <input
+        type="text"
+        name="play_url"
+        value="<?= htmlspecialchars($_POST['play_url'] ?? ($game['play_url'] ?? '')) ?>"
+        class="admin-input"
+        placeholder="/Sudoku/sudoku.html"
+      >
+      <small class="admin-help">Leave empty if Coming Soon is checked.</small>
+    </div>
+
+    <div class="admin-form-group">
+      <label class="admin-label">Difficulty</label>
+      <?php $d = $_POST['difficulty'] ?? ($game['difficulty'] ?? ''); ?>
+      <select name="difficulty" class="admin-input">
+        <option value="">-- select --</option>
+        <option value="easy" <?= $d === 'easy' ? 'selected' : '' ?>>Easy</option>
+        <option value="medium" <?= $d === 'medium' ? 'selected' : '' ?>>Medium</option>
+        <option value="hard" <?= $d === 'hard' ? 'selected' : '' ?>>Hard</option>
+      </select>
+    </div>
+
+    <div class="admin-form-group">
+      <label class="admin-label">
+        <?php
+          
+          $comingChecked = !empty($_POST)
+            ? !empty($_POST['is_coming_soon'])
+            : !empty($game['is_coming_soon']);
+        ?>
+        <input
+          type="checkbox"
+          name="is_coming_soon"
+          value="1"
+          <?= $comingChecked ? 'checked' : '' ?>
+        >
+        Coming soon
+      </label>
+    </div>
+
+    <div class="admin-form-group">
+      <label class="admin-label">Sort Order</label>
+      <input
+        type="number"
+        name="sort_order"
+        value="<?= htmlspecialchars($_POST['sort_order'] ?? ($game['sort_order'] ?? '0')) ?>"
+        class="admin-input"
+      >
+      <small class="admin-help">Lower number appears first.</small>
+    </div>
+   
 
     <?php if (!empty($game['image_path'])): ?>
       <div class="admin-form-group">
@@ -123,6 +202,7 @@ include __DIR__ . '/../includes/admin_header.php';
       <button type="submit" class="btn-primary">Update Game</button>
       <a href="<?= BASE_URL ?>/admin/games.php" class="btn-secondary">Cancel</a>
     </div>
+
   </form>
 </section>
 

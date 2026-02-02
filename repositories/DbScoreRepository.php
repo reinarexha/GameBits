@@ -50,36 +50,41 @@ class DbScoreRepository implements ScoreRepositoryInterface {
     }
 
     public function getTopScores(int $gameId, int $limit = 10): array {
-        $stmt = $this->db->prepare("
-            SELECT * FROM scores
-            WHERE game_id = :game_id
-            ORDER BY score DESC, created_at ASC
-            LIMIT :lim
-        ");
-        $stmt->bindValue(':game_id', $gameId, PDO::PARAM_INT);
-        $stmt->bindValue(':lim', $limit, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetchAll();
-    }
+    $limit = max(1, (int)$limit);
 
-    // This is the real DB "join" for leaderboard
+    $sql = "
+        SELECT *
+        FROM scores
+        WHERE game_id = :game_id
+        ORDER BY score DESC, created_at ASC
+        LIMIT $limit
+    ";
+
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([':game_id' => $gameId]);
+    return $stmt->fetchAll();
+}
+
+
+    // join
     public function findAllWithGames(): array {
         $stmt = $this->db->query("
-            SELECT 
-              s.id,
-              s.user_id,
-              u.username,
-              s.game_id,
-              g.title AS game_title,
-              s.score,
-              s.created_at
-            FROM scores s
-            JOIN users u ON u.id = s.user_id
-            JOIN games g ON g.id = s.game_id
-        ");
+    SELECT 
+      s.id,
+      s.user_id,
+      u.username,
+      s.game_id,
+      g.title AS game_title,
+      s.score,
+      s.created_at
+    FROM scores s
+    JOIN users u ON u.id = s.user_id
+    JOIN games g ON g.id = s.game_id
+    ORDER BY s.score DESC, s.created_at ASC
+");
+
         $rows = $stmt->fetchAll();
 
-        // Format to match your old structure: $score['game']['title']
         $out = [];
         foreach ($rows as $r) {
             $out[] = [
@@ -97,7 +102,7 @@ class DbScoreRepository implements ScoreRepositoryInterface {
         return $out;
     }
 
-    // Optional (if you add to interface): admin moderation
+    // admin mod
     public function update(int $id, array $data): bool {
         $stmt = $this->db->prepare("
             UPDATE scores

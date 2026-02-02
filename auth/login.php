@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'role'     => $user['role'],
             ]);
             if ($auth->isAdmin()) {
-                header('Location: /admin/games.php');
+                header('Location: /admin/games/');
             } else {
                 header('Location: /index.php');
             }
@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <button type="submit" class="btn-primary">Log In</button>
                 </form>
-                <p class="signup-text">Don’t have an account? <a href="register.php">Register</a></p>
+                <p class="signup-text">Don’t have an account? <a href="/register.php">Register</a></p>
             </div>
         </div>
     </main>

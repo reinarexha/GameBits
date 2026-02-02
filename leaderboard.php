@@ -5,12 +5,12 @@ require_once __DIR__ . '/repositories/DbScoreRepository.php';
 $scoreRepo = new DbScoreRepository();
 $scoresWithGames = $scoreRepo->findAllWithGames();
 
-
+// sort desc
 usort($scoresWithGames, function ($a, $b) {
     return ((int)($b['score'] ?? 0)) <=> ((int)($a['score'] ?? 0));
 });
 
-// Pagination
+// pagination
 $page = (int)($_GET['page'] ?? 1);
 if ($page < 1) $page = 1;
 

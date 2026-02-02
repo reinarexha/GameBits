@@ -10,13 +10,9 @@ if ($page < 1) $page = 1;
 
 $perPage = ITEMS_PER_PAGE;
 
-// Get games (all or search results)
+
 $allGames = $searchQuery ? $gameRepo->search($searchQuery) : $gameRepo->findAll();
 
-// Show newest first
-$allGames = array_reverse($allGames);
-
-// Pagination (split into pages)
 $totalItems = count($allGames);
 $totalPages = (int)ceil($totalItems / $perPage);
 $offset = ($page - 1) * $perPage;
@@ -50,12 +46,12 @@ include __DIR__ . '/../includes/admin_header.php';
 
   <form method="GET" action="<?= BASE_URL ?>/admin/games.php" class="admin-search">
     <input
-      id="adminGameSearch"
-      type="search"
-      name="search"
-      placeholder="Search games..."
-      value="<?= htmlspecialchars($searchQuery) ?>"
-      class="admin-search-input"
+  id="adminGameSearch"
+  type="search"
+  name="search"
+  placeholder="Search games..."
+  value="<?= htmlspecialchars($searchQuery) ?>"
+  class="admin-search-input"
 >
 
     <button type="submit" class="btn-primary admin-search-btn">Search</button>
@@ -70,8 +66,8 @@ include __DIR__ . '/../includes/admin_header.php';
       <?= $searchQuery ? 'No games found matching your search.' : 'No games yet. Create your first game!' ?>
     </p>
   <?php else: ?>
-    <div class="games-grid admin-games-grid"
-    data-search="<?= htmlspecialchars(($game['title'] ?? '') . ' ' . ($game['description'] ?? '')) ?>">
+  <div class="games-grid admin-games-grid">
+    
       <?php foreach ($games as $game): ?>
         <div class="game-card admin-game-card">
           <?php if (!empty($game['image_path'])): ?>

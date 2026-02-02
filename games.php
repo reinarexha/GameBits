@@ -13,24 +13,34 @@ if ($page < 1) $page = 1;
 
 $perPage = ITEMS_PER_PAGE;
 
+
 $allGames = $search !== ''
     ? $gameRepo->search($search)
     : $gameRepo->findAll();
 
 
-$allGames = array_reverse($allGames);
 
-// Pagination
+// pagination
 $totalItems = count($allGames);
 $totalPages = (int)ceil($totalItems / $perPage);
 $offset = ($page - 1) * $perPage;
 $games = array_slice($allGames, $offset, $perPage);
 
-
 $pageTitle = 'Mini-Games';
 $currentPage = 'games';
 include __DIR__ . '/includes/header.php';
 ?>
+<?php
+function difficultyStars(?string $difficulty): string {
+  return match (strtolower((string)$difficulty)) {
+    'easy' => '★★☆☆☆',
+    'medium' => '★★★☆☆',
+    'hard' => '★★★★☆',
+    default => '',
+  };
+}
+?>
+
 
 <section class="hero">
   <h1 class="hero-title">Mini-Games</h1>
@@ -77,28 +87,47 @@ include __DIR__ . '/includes/header.php';
         <?php foreach ($games as $game): ?>
           <div class="game-card">
 
-            <?php if (!empty($game['image_path'])): ?>
-              <img
-                src="<?= htmlspecialchars($game['image_path']) ?>"
-                alt="<?= htmlspecialchars($game['title']) ?>"
-                class="admin-game-image"
-              >
-            <?php endif; ?>
+  <?php if (!empty($game['image_path'])): ?>
+    <img
+      src="<?= htmlspecialchars($game['image_path']) ?>"
+      alt="<?= htmlspecialchars($game['title']) ?>"
+      class="game-img"
+    >
+  <?php endif; ?>
 
-            <h3 class="game-title">
-              <?= htmlspecialchars($game['title']) ?>
-            </h3>
+  <div>
+    <div class="game-title">
+      <?= htmlspecialchars($game['title']) ?>
+    </div>
 
-            <p class="game-desc">
-              <?php
-                $desc = $game['description'] ?? '';
-                echo htmlspecialchars(mb_substr($desc, 0, 140));
-                echo mb_strlen($desc) > 140 ? '...' : '';
-              ?>
-            </p>
+    <div class="game-desc">
+      <?= htmlspecialchars($game['description'] ?? '') ?>
+    </div>
+  </div>
 
-            <a href="#" class="btn-primary">Play Now</a>
-          </div>
+  <?php
+    $stars  = difficultyStars($game['difficulty'] ?? null);
+    $label  = $game['difficulty'] ?? '';
+    $coming = !empty($game['is_coming_soon']);
+    $url    = $coming ? '#' : ($game['play_url'] ?? '#');
+  ?>
+
+  <?php if ($stars !== ''): ?>
+    <div class="difficulty">
+      <?= $stars ?> - <?= htmlspecialchars(ucfirst($label)) ?>
+    </div>
+  <?php endif; ?>
+
+  <a
+    href="<?= htmlspecialchars($url) ?>"
+    class="btn-small"
+    <?= $coming ? 'onclick="return false;" aria-disabled="true"' : '' ?>
+  >
+    <?= $coming ? 'Coming Soon' : 'Play Now' ?>
+  </a>
+
+</div>
+
         <?php endforeach; ?>
       </div>
 

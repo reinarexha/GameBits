@@ -36,7 +36,7 @@ if (!$game) {
 }
 
 if (!empty($game['image_path'])) {
-    $fullPath = dirname(__DIR__, 3) . '/' . $game['image_path'];
+    $fullPath = dirname(__DIR__, 3) . '/public/' . $game['image_path'];
     if (file_exists($fullPath) && is_file($fullPath)) {
         unlink($fullPath);
     }

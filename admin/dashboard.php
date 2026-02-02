@@ -8,16 +8,25 @@ $gameRepo = new DbGameRepository();
 $newsRepo = new DbNewsRepository();
 $scoreRepo = new DbScoreRepository();
 
-$games  = $gameRepo->findAll();
-$news   = $newsRepo->findAll();
+$games = $gameRepo->findAll();
+$news = $newsRepo->findAll();
 $scores = $scoreRepo->findAll();
 
-$stats = [
-  'total_games'  => count($games),
-  'total_news'   => count($news),
-  'total_scores' => count($scores),
-  'total_users'  => count(array_unique(array_column($scores, 'user_id'))),
-];
+// count unique users
+$userIds = array();
+foreach ($scores as $score) {
+    if (isset($score['user_id'])) {
+        $userIds[] = $score['user_id'];
+    }
+}
+$uniqueUsers = array_unique($userIds);
+
+$stats = array(
+    'total_games' => count($games),
+    'total_news' => count($news),
+    'total_scores' => count($scores),
+    'total_users' => count($uniqueUsers)
+);
 
 $pageTitle = 'Dashboard';
 $currentPage = 'dashboard';

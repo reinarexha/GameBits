@@ -8,14 +8,31 @@ $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $title = trim($_POST['title'] ?? '');
   $description = trim($_POST['description'] ?? '');
+
+
+  $playUrl = trim($_POST['play_url'] ?? '');
+  $difficulty = trim($_POST['difficulty'] ?? '');
+  $isComingSoon = isset($_POST['is_coming_soon']) ? 1 : 0;
+  $sortOrder = (int)($_POST['sort_order'] ?? 0);
+
   $imagePath = '';
 
-  // Back-end validation (server-side)
+
   if ($title === '') {
     $errors[] = 'Title is required';
   }
 
-  // Upload (optional)
+
+  if ($difficulty !== '' && !in_array($difficulty, ['easy', 'medium', 'hard'], true)) {
+    $errors[] = 'Difficulty must be Easy, Medium, or Hard';
+  }
+
+ 
+  if (!$isComingSoon && $playUrl === '') {
+    $errors[] = 'Play URL is required unless the game is marked Coming Soon';
+  }
+
+  // upload 
   if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
     $uploader = new FileUploader(
       ALLOWED_GAME_IMAGE_TYPES,
@@ -35,8 +52,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $gameRepo = new DbGameRepository();
     $gameRepo->create([
       'title' => $title,
-      'description' => $description,
-      'image_path' => $imagePath,
+      'description' => $description !== '' ? $description : null,
+      'image_path' => $imagePath !== '' ? $imagePath : null,
+
+      // new fields saved to db
+      'play_url' => $playUrl !== '' ? $playUrl : null,
+      'difficulty' => $difficulty !== '' ? $difficulty : null,
+      'is_coming_soon' => $isComingSoon,
+      'sort_order' => $sortOrder,
     ]);
 
     header('Location: ' . BASE_URL . '/admin/games.php?success=' . urlencode('Game created successfully'));
@@ -66,6 +89,7 @@ include __DIR__ . '/../includes/admin_header.php';
   <?php endif; ?>
 
   <form method="POST" enctype="multipart/form-data" class="admin-form-card">
+
     <div class="admin-form-group">
       <label class="admin-label">Title *</label>
       <input
@@ -86,6 +110,54 @@ include __DIR__ . '/../includes/admin_header.php';
       ><?= htmlspecialchars($_POST['description'] ?? '') ?></textarea>
     </div>
 
+    <!-- new -->
+    <div class="admin-form-group">
+      <label class="admin-label">Play URL</label>
+      <input
+        type="text"
+        name="play_url"
+        value="<?= htmlspecialchars($_POST['play_url'] ?? '') ?>"
+        class="admin-input"
+        placeholder="/Sudoku/sudoku.html"
+      >
+      <small class="admin-help">Leave empty if Coming Soon is checked.</small>
+    </div>
+
+    <div class="admin-form-group">
+      <label class="admin-label">Difficulty</label>
+      <?php $d = $_POST['difficulty'] ?? ''; ?>
+      <select name="difficulty" class="admin-input">
+        <option value="">-- select --</option>
+        <option value="easy" <?= $d === 'easy' ? 'selected' : '' ?>>Easy</option>
+        <option value="medium" <?= $d === 'medium' ? 'selected' : '' ?>>Medium</option>
+        <option value="hard" <?= $d === 'hard' ? 'selected' : '' ?>>Hard</option>
+      </select>
+    </div>
+
+    <div class="admin-form-group">
+      <label class="admin-label">
+        <input
+          type="checkbox"
+          name="is_coming_soon"
+          value="1"
+          <?= !empty($_POST['is_coming_soon']) ? 'checked' : '' ?>
+        >
+        Coming soon
+      </label>
+    </div>
+
+    <div class="admin-form-group">
+      <label class="admin-label">Sort Order</label>
+      <input
+        type="number"
+        name="sort_order"
+        value="<?= htmlspecialchars($_POST['sort_order'] ?? '0') ?>"
+        class="admin-input"
+      >
+      <small class="admin-help">Lower number appears first.</small>
+    </div>
+
+
     <div class="admin-form-group">
       <label class="admin-label">Game Image</label>
       <input
@@ -101,6 +173,7 @@ include __DIR__ . '/../includes/admin_header.php';
       <button type="submit" class="btn-primary">Create Game</button>
       <a href="<?= BASE_URL ?>/admin/games.php" class="btn-secondary">Cancel</a>
     </div>
+
   </form>
 </section>
 

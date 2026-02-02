@@ -1,100 +1,106 @@
+-- Make sure a database is selected
+CREATE DATABASE IF NOT EXISTS gamebits
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
 
+USE gamebits;
+
+--------------------------------------------------
+-- USERS TABLE
+--------------------------------------------------
 CREATE TABLE users (
-    id INT IDENTITY(1,1) PRIMARY KEY,         
-    username NVARCHAR(50) NOT NULL UNIQUE,   
-    email NVARCHAR(100) NOT NULL UNIQUE,      
-    password NVARCHAR(255) NOT NULL,          
-    role NVARCHAR(20) NOT NULL,               
-    created_at DATETIME2 NOT NULL DEFAULT GETDATE(), 
-    updated_at DATETIME2 NOT NULL DEFAULT GETDATE(),  
-    created_by INT NULL,                     
-    updated_by INT NULL                      
-);  
-GO
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'user') NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by INT NULL,
+    updated_by INT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-ALTER TABLE users
-ADD CONSTRAINT chk_users_role
-CHECK (role IN ('admin', 'user'));
-GO
-
-
+--------------------------------------------------
+-- GAMES TABLE
+--------------------------------------------------
 CREATE TABLE games (
-    id INT IDENTITY(1,1) PRIMARY KEY,          
-    title NVARCHAR(100) NOT NULL,              
-    description NVARCHAR(MAX) NULL,            
-    image_path NVARCHAR(255) NULL,             
-    created_at DATETIME2 NOT NULL DEFAULT GETDATE(),  
-    updated_at DATETIME2 NOT NULL DEFAULT GETDATE(),  
-    created_by INT NULL,                       
-    updated_by INT NULL                        
-);
-GO
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    description TEXT NULL,
+    image_path VARCHAR(255) NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by INT NULL,
+    updated_by INT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-
+--------------------------------------------------
+-- SCORES TABLE
+--------------------------------------------------
 CREATE TABLE scores (
-    id INT IDENTITY(1,1) PRIMARY KEY,          
-    user_id INT NOT NULL,                      
-    game_id INT NOT NULL,                      
-    score INT NOT NULL,                        
-    created_at DATETIME2 NOT NULL DEFAULT GETDATE(),  
-    updated_at DATETIME2 NOT NULL DEFAULT GETDATE(),  
-    created_by INT NULL,                       
-    updated_by INT NULL                       
-);
-GO
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    game_id INT NOT NULL,
+    score INT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by INT NULL,
+    updated_by INT NULL,
+    CONSTRAINT fk_scores_user
+        FOREIGN KEY (user_id) REFERENCES users(id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_scores_game
+        FOREIGN KEY (game_id) REFERENCES games(id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-
-ALTER TABLE scores
-ADD CONSTRAINT fk_scores_user
-FOREIGN KEY (user_id) REFERENCES users(id);
-GO
-
-ALTER TABLE scores
-ADD CONSTRAINT fk_scores_game
-FOREIGN KEY (game_id) REFERENCES games(id);
-GO
-
-
+--------------------------------------------------
+-- CONTACT MESSAGES TABLE
+--------------------------------------------------
 CREATE TABLE contact_messages (
-    id INT IDENTITY(1,1) PRIMARY KEY,           
-    name NVARCHAR(100) NOT NULL,                
-    email NVARCHAR(100) NOT NULL,              
-    subject NVARCHAR(200) NULL,                 
-    message NVARCHAR(MAX) NOT NULL,             
-    created_at DATETIME2 NOT NULL DEFAULT GETDATE(),   
-    updated_at DATETIME2 NOT NULL DEFAULT GETDATE(),   
-    created_by INT NULL,                       
-    updated_by INT NULL                         
-);
-GO
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    subject VARCHAR(200) NULL,
+    message TEXT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by INT NULL,
+    updated_by INT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-
-
+--------------------------------------------------
+-- PAGE CONTENTS TABLE
+--------------------------------------------------
 CREATE TABLE page_contents (
-    id INT IDENTITY(1,1) PRIMARY KEY,           
-    page NVARCHAR(50) NOT NULL,                
-    section_key NVARCHAR(100) NOT NULL,         
-    content_text NVARCHAR(MAX) NULL,            
-    content_image_path NVARCHAR(255) NULL,      
-    created_at DATETIME2 NOT NULL DEFAULT GETDATE(),  
-    updated_at DATETIME2 NOT NULL DEFAULT GETDATE(),   
-    created_by INT NULL,                        
-    updated_by INT NULL                         
-);
-GO
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    page VARCHAR(50) NOT NULL,
+    section_key VARCHAR(100) NOT NULL,
+    content_text TEXT NULL,
+    content_image_path VARCHAR(255) NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by INT NULL,
+    updated_by INT NULL,
+    UNIQUE KEY uq_page_contents_page_section_key (page, section_key)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-
-INSERT INTO users (username, email, password, role, created_at, updated_at, created_by, updated_by)
+--------------------------------------------------
+-- ADMIN USER SEED
+--------------------------------------------------
+INSERT INTO users (
+    username,
+    email,
+    password,
+    role,
+    created_by,
+    updated_by
+)
 VALUES (
-    'admin',                     
-    'admin@example.com',         
-    'PLACEHOLDER_HASH_FOR_admin123',  
-    'admin',                     
-    GETDATE(),                   
-    GETDATE(),                   
-    NULL,                        
-    NULL                         
+    'admin',
+    'admin@example.com',
+    'PLACEHOLDER_HASH_FOR_admin123',
+    'admin',
+    NULL,
+    NULL
 );
-GO
-
-
